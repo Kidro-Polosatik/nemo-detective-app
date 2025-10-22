@@ -1,19 +1,21 @@
-/* Главное меню - детективный стиль */
+/* Стиль главного меню из Leonardo AI - детективная атмосфера */
 .main-menu {
     font-family: 'Georgia', 'Times New Roman', serif;
-    background: linear-gradient(135deg, #0A1931 0%, #1A2B4A 100%);
-    color: #FFD700;
+    background: 
+        linear-gradient(135deg, #0A1931 0%, #1A2B4A 100%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230A1931"/><path d="M0 50 L100 50 M50 0 L50 100" stroke="%23FFD700" stroke-width="0.5" opacity="0.1"/></svg>');
+    color: #D4AF37;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 40px 20px;
+    padding: 60px 20px 40px;
     position: relative;
     overflow: hidden;
 }
 
-/* Эффект старинной бумаги */
+/* Эффект винтажной бумаги с текстурой */
 .main-menu::before {
     content: '';
     position: absolute;
@@ -21,112 +23,248 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.1"/></svg>');
-    opacity: 0.1;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 49%, rgba(212, 175, 55, 0.02) 50%, transparent 51%);
+    background-size: 100% 100%, 100% 100%, 30px 30px;
     pointer-events: none;
 }
 
-/* Верхний заголовок */
+/* Заголовок в стиле старинной вывески */
 .main-title {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 50px;
     z-index: 2;
+    position: relative;
 }
 
 .main-title h1 {
-    font-size: 2.8rem;
-    font-weight: bold;
+    font-size: 3.2rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 4px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: 10px;
-    background: linear-gradient(45deg, #FFD700, #FFED4E);
+    letter-spacing: 6px;
+    margin-bottom: 15px;
+    background: linear-gradient(45deg, #D4AF37, #F7EF8A, #D4AF37);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    position: relative;
+}
+
+.main-title h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #D4AF37, transparent);
 }
 
 .main-title .subtitle {
-    font-size: 1.2rem;
-    letter-spacing: 8px;
-    opacity: 0.9;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    font-size: 1.3rem;
+    letter-spacing: 12px;
+    color: #B8A050;
+    text-transform: uppercase;
+    margin-top: 20px;
+    text-shadow: 0 0 10px rgba(184, 160, 80, 0.3);
 }
 
-/* Контейнер кнопок меню */
+/* Контейнер кнопок в стиле детективного досье */
 .menu-buttons-container {
     z-index: 2;
-    margin: 40px 0;
+    margin: 50px 0;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
 }
 
-/* Нижняя секция меню */
+/* Кнопки в стиле старинных документов */
+.menu-btn {
+    background: 
+        linear-gradient(45deg, rgba(30, 58, 95, 0.9), rgba(45, 79, 124, 0.9)),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231E3A5F"/><path d="M10 10 L90 10 M10 30 L90 30 M10 50 L90 50 M10 70 L90 70 M10 90 L90 90" stroke="%23D4AF37" stroke-width="1" opacity="0.1"/></svg>');
+    color: #D4AF37;
+    border: 2px solid #D4AF37;
+    border-radius: 8px;
+    padding: 20px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 4px 20px rgba(212, 175, 55, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.menu-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.menu-btn:hover::before {
+    left: 100%;
+}
+
+.menu-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 8px 30px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    background: 
+        linear-gradient(45deg, rgba(45, 79, 124, 0.9), rgba(59, 95, 138, 0.9)),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232D4F7C"/><path d="M10 10 L90 10 M10 30 L90 30 M10 50 L90 50 M10 70 L90 70 M10 90 L90 90" stroke="%23D4AF37" stroke-width="1" opacity="0.1"/></svg>');
+}
+
+.menu-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Особый стиль для главной кнопки */
+.menu-btn.start-btn {
+    font-size: 1.4rem;
+    padding: 25px 35px;
+    background: 
+        linear-gradient(45deg, rgba(212, 175, 55, 0.1), rgba(184, 160, 80, 0.1)),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230A1931"/><circle cx="50" cy="50" r="40" fill="none" stroke="%23D4AF37" stroke-width="0.5" opacity="0.2"/></svg>');
+    border: 3px solid #D4AF37;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+/* Нижняя секция */
 .bottom-section {
     text-align: center;
     z-index: 2;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .quote {
     font-style: italic;
-    font-size: 1rem;
-    color: #B8B8B8;
-    max-width: 300px;
-    line-height: 1.4;
-    margin-bottom: 15px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    opacity: 0.8;
+    font-size: 1.1rem;
+    color: #8A7A40;
+    max-width: 320px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    text-shadow: 0 0 5px rgba(138, 122, 64, 0.3);
+    position: relative;
+    padding: 0 20px;
+}
+
+.quote::before,
+.quote::after {
+    content: '"';
+    color: #D4AF37;
+    font-size: 1.5rem;
+    position: absolute;
+    top: -5px;
+}
+
+.quote::before {
+    left: 0;
+}
+
+.quote::after {
+    right: 0;
 }
 
 .score-display {
     font-size: 1rem;
-    color: #FFD700;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    color: #D4AF37;
+    text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+    background: rgba(30, 58, 95, 0.5);
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
-/* Декоративные элементы */
+/* Декоративные элементы в стиле детективных атрибутов */
 .decoration {
     position: absolute;
     opacity: 0.1;
     z-index: 1;
+    pointer-events: none;
 }
 
 .decoration.top-left {
-    top: 20px;
-    left: 20px;
-    width: 80px;
-    height: 80px;
-    border: 1px solid #FFD700;
+    top: 30px;
+    left: 30px;
+    width: 60px;
+    height: 60px;
+    border: 2px solid #D4AF37;
+    border-radius: 50%;
+}
+
+.decoration.top-left::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    right: -15px;
+    width: 30px;
+    height: 2px;
+    background: #D4AF37;
     transform: rotate(45deg);
 }
 
 .decoration.bottom-right {
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    border: 1px solid #FFD700;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #D4AF37;
     border-radius: 50%;
+    background: 
+        radial-gradient(circle at 30% 30%, transparent 40%, #D4AF37 41%, #D4AF37 45%, transparent 46%),
+        radial-gradient(circle at 70% 70%, transparent 40%, #D4AF37 41%, #D4AF37 45%, transparent 46%);
 }
 
-/* Адаптивность меню */
+/* Адаптивность */
 @media (max-width: 480px) {
+    .main-menu {
+        padding: 40px 15px 30px;
+    }
+    
     .main-title h1 {
-        font-size: 2.2rem;
-        letter-spacing: 3px;
+        font-size: 2.4rem;
+        letter-spacing: 4px;
     }
     
     .main-title .subtitle {
         font-size: 1rem;
-        letter-spacing: 6px;
+        letter-spacing: 8px;
+    }
+    
+    .menu-buttons-container {
+        max-width: 280px;
+        gap: 20px;
+    }
+    
+    .menu-btn {
+        padding: 18px 25px;
+        font-size: 1rem;
+    }
+    
+    .menu-btn.start-btn {
+        font-size: 1.2rem;
+        padding: 22px 30px;
     }
     
     .quote {
-        font-size: 0.9rem;
-        max-width: 250px;
+        font-size: 1rem;
+        max-width: 280px;
     }
 }
