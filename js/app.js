@@ -47,7 +47,7 @@ class NemoDetectiveApp {
     }
     
     start() {
-        console.log('🕵️ Неживой Детектив - приложение запущено!');
+        console.log('🕵️ Вечный Детектив - приложение запущено!');
         console.log('Загружено эпизодов:', Object.keys(window.episodes || {}).length);
         console.log('Компоненты:', {
             Menu: typeof Menu,
@@ -110,7 +110,7 @@ loadUserData() {
         if (container) {
             container.innerHTML = `
                 <div class="loading">
-                    <h2>🕵️ Неживой Детектив</h2>
+                    <h2>🕵️ Вечный Детектив</h2>
                     <p>${message}</p>
                     <button onclick="location.reload()">🔄 Перезагрузить</button>
                 </div>
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('❌ Компоненты не загрузились');
             document.getElementById('app-container').innerHTML = `
                 <div class="loading">
-                    <h2>🕵️ Неживой Детектив</h2>
+                    <h2>🕵️ Вечный Детектив</h2>
                     <p>Ошибка загрузки. Перезагрузите приложение.</p>
                     <p>Menu: ${typeof Menu}</p>
                     <p>EpisodeView: ${typeof EpisodeView}</p>
