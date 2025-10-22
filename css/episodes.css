@@ -1,0 +1,63 @@
+/* Стили для эпизодов и игрового процесса */
+.episode-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px;
+    border-left: 4px solid #ffd700;
+}
+
+.episode-title {
+    color: #ffd700;
+    font-size: 1.4em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.episode-text {
+    text-align: justify;
+    margin-bottom: 25px;
+    font-size: 16px;
+    white-space: pre-line;
+    line-height: 1.6;
+}
+
+.choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.answer-input {
+    width: 100%;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #444;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-family: 'Georgia', serif;
+}
+
+.answer-input:focus {
+    outline: none;
+    border-color: #ffd700;
+}
+
+/* Адаптивность эпизодов */
+@media (max-width: 480px) {
+    .episode-container {
+        padding: 20px 15px;
+        margin: 10px;
+    }
+    
+    .episode-title {
+        font-size: 1.2em;
+    }
+    
+    .episode-text {
+        font-size: 15px;
+    }
+}

@@ -1,0 +1,132 @@
+/* Главное меню - детективный стиль */
+.main-menu {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: linear-gradient(135deg, #0A1931 0%, #1A2B4A 100%);
+    color: #FFD700;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Эффект старинной бумаги */
+.main-menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.1"/></svg>');
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+/* Верхний заголовок */
+.main-title {
+    text-align: center;
+    margin-top: 40px;
+    z-index: 2;
+}
+
+.main-title h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, #FFD700, #FFED4E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.main-title .subtitle {
+    font-size: 1.2rem;
+    letter-spacing: 8px;
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Контейнер кнопок меню */
+.menu-buttons-container {
+    z-index: 2;
+    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Нижняя секция меню */
+.bottom-section {
+    text-align: center;
+    z-index: 2;
+    margin-bottom: 30px;
+}
+
+.quote {
+    font-style: italic;
+    font-size: 1rem;
+    color: #B8B8B8;
+    max-width: 300px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
+}
+
+.score-display {
+    font-size: 1rem;
+    color: #FFD700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Декоративные элементы */
+.decoration {
+    position: absolute;
+    opacity: 0.1;
+    z-index: 1;
+}
+
+.decoration.top-left {
+    top: 20px;
+    left: 20px;
+    width: 80px;
+    height: 80px;
+    border: 1px solid #FFD700;
+    transform: rotate(45deg);
+}
+
+.decoration.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #FFD700;
+    border-radius: 50%;
+}
+
+/* Адаптивность меню */
+@media (max-width: 480px) {
+    .main-title h1 {
+        font-size: 2.2rem;
+        letter-spacing: 3px;
+    }
+    
+    .main-title .subtitle {
+        font-size: 1rem;
+        letter-spacing: 6px;
+    }
+    
+    .quote {
+        font-size: 0.9rem;
+        max-width: 250px;
+    }
+}
