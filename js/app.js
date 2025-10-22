@@ -65,19 +65,27 @@ class NemoDetectiveApp {
         }
     }
     
-    loadUserData() {
-        try {
-            const savedData = localStorage.getItem('nemo_detective_data');
-            if (savedData) {
-                window.appState.userData = JSON.parse(savedData);
-                console.log('Данные пользователя загружены:', window.appState.userData);
-            } else {
-                console.log('Сохранённых данных нет, используем по умолчанию');
+loadUserData() {
+    try {
+        const savedData = localStorage.getItem('nemo_detective_data');
+        if (savedData) {
+            const parsedData = JSON.parse(savedData);
+            // Добавляем completedEpisodes если его нет
+            if (!parsedData.completedEpisodes) {
+                parsedData.completedEpisodes = [];
             }
-        } catch (e) {
-            console.error('Ошибка загрузки данных:', e);
+            window.appState.userData = parsedData;
+            console.log('Данные пользователя загружены:', window.appState.userData);
+        } else {
+            console.log('Сохранённых данных нет, используем по умолчанию');
+            // Инициализируем completedEpisodes по умолчанию
+            window.appState.userData.completedEpisodes = [];
         }
+    } catch (e) {
+        console.error('Ошибка загрузки данных:', e);
+        window.appState.userData.completedEpisodes = [];
     }
+}
     
     setupBackButton() {
         // Кнопка "Назад" только если Telegram WebApp доступен
