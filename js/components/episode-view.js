@@ -42,67 +42,86 @@ class EpisodeView {
         console.log('Эпизод отображён');
     }
     
-    static render(episode) {
-        const fullEpisodeId = `${episode.chapter}_${episode.id}`;
-        const correctAnswers = episode.correctAnswers || [];
-        
-        return `
-            <div class="episode-container">
-                <div class="episode-title">Глава ${episode.chapter}, Эпизод ${episode.id}: ${episode.title}</div>
-                <div class="episode-text">${episode.text}</div>
-                
-                ${episode.hasInput ? `
-                <input type="text" class="answer-input" placeholder="Введите ваш ответ..." id="answer-input">
-                <button class="submit-btn" onclick="EpisodeView.submitAnswer('${fullEpisodeId}')">
-                    🔍 ОТПРАВИТЬ ОТВЕТ
-                </button>
-                ` : `
-                <button class="submit-btn" onclick="EpisodeView.nextEpisode('${fullEpisodeId}')">
-                    ➡️ ДАЛЕЕ
-                </button>
-                `}
-                
-                <button class="back-btn" onclick="EpisodeView.goBack()">← ВЕРНУТЬСЯ В МЕНЮ</button>
+static render(episode) {
+    const fullEpisodeId = `${episode.chapter}_${episode.id}`;
+    const correctAnswers = episode.correctAnswers || [];
+    const isCompleted = window.appState?.userData?.completedEpisodes?.includes(fullEpisodeId);
+    
+    return `
+        <div class="episode-container">
+            <div class="episode-title">
+                Глава ${episode.chapter}, Эпизод ${episode.id}: ${episode.title}
+                ${isCompleted ? ' ✅' : ''}
             </div>
-        `;
+            <div class="episode-text">${episode.text}</div>
+            
+            ${episode.hasInput ? `
+            <input type="text" class="answer-input" placeholder="Введите ваш ответ..." id="answer-input">
+            <button class="submit-btn" onclick="EpisodeView.submitAnswer('${fullEpisodeId}')">
+                🔍 ${isCompleted ? 'ПРОЙДЕНО' : 'ОТПРАВИТЬ ОТВЕТ'}
+            </button>
+            ` : `
+            <button class="submit-btn" onclick="EpisodeView.nextEpisode('${fullEpisodeId}')">
+                ➡️ ДАЛЕЕ
+            </button>
+            `}
+            
+            <button class="back-btn" onclick="EpisodeView.goBack()">← ВЕРНУТЬСЯ В МЕНЮ</button>
+        </div>
+    `;
+}
+    
+static submitAnswer(fullEpisodeId) {
+    console.log('=== ОБРАБОТКА ОТВЕТА ===', fullEpisodeId);
+    
+    const episode = window.episodes[fullEpisodeId];
+    if (!episode) {
+        console.error('ERROR: Эпизод не найден');
+        alert('Ошибка: эпизод не найден');
+        return;
+    }
+
+    // ПРОВЕРКА: Уже пройден ли этот эпизод?
+    if (window.appState?.userData?.completedEpisodes?.includes(fullEpisodeId)) {
+        console.log('Эпизод уже пройден, переход к следующему');
+        this.nextEpisode(fullEpisodeId);
+        return;
+    }
+
+    const answerInput = document.getElementById('answer-input');
+    const answer = answerInput ? answerInput.value.trim().toLowerCase() : '';
+    
+    console.log('Ответ:', answer);
+    console.log('Правильные ответы:', episode.correctAnswers);
+    
+    if (!answer) {
+        alert('Введите ответ перед отправкой!');
+        return;
     }
     
-    static submitAnswer(fullEpisodeId) {
-        console.log('=== ОБРАБОТКА ОТВЕТА ===', fullEpisodeId);
-        
-        const episode = window.episodes[fullEpisodeId];
-        if (!episode) {
-            console.error('ERROR: Эпизод не найден');
-            alert('Ошибка: эпизод не найден');
-            return;
-        }
-        
-        const answerInput = document.getElementById('answer-input');
-        const answer = answerInput ? answerInput.value.trim().toLowerCase() : '';
-        
-        console.log('Ответ:', answer);
-        console.log('Правильные ответы:', episode.correctAnswers);
-        
-        if (!answer) {
-            alert('Введите ответ перед отправкой!');
-            return;
-        }
-        
-        const correctAnswers = episode.correctAnswers || [];
-        const normalizedAnswer = answer.replace(/\s+/g, ' ').trim();
-        
-        const isCorrect = correctAnswers.some(correct => {
-            const normalizedCorrect = String(correct).toLowerCase().replace(/\s+/g, ' ').trim();
-            return normalizedCorrect === normalizedAnswer;
-        });
-        
-        console.log('Результат:', isCorrect);
-        
-        if (isCorrect) {
-            // Правильный ответ
+    const correctAnswers = episode.correctAnswers || [];
+    const normalizedAnswer = answer.replace(/\s+/g, ' ').trim();
+    
+    const isCorrect = correctAnswers.some(correct => {
+        const normalizedCorrect = String(correct).toLowerCase().replace(/\s+/g, ' ').trim();
+        return normalizedCorrect === normalizedAnswer;
+    });
+    
+    console.log('Результат:', isCorrect);
+    
+    if (isCorrect) {
+        // ПРОВЕРКА: Уже начисляли баллы за этот эпизод?
+        if (!window.appState?.userData?.completedEpisodes?.includes(fullEpisodeId)) {
+            // Правильный ответ - начисляем баллы ТОЛЬКО если ещё не проходили
             if (window.appState && window.appState.userData) {
                 window.appState.userData.score += 10;
                 window.appState.userData.currentEpisode = parseInt(episode.id) + 1;
+                
+                // Добавляем эпизод в список пройденных
+                if (!window.appState.userData.completedEpisodes) {
+                    window.appState.userData.completedEpisodes = [];
+                }
+                window.appState.userData.completedEpisodes.push(fullEpisodeId);
                 
                 // Сохраняем данные
                 try {
@@ -113,24 +132,28 @@ class EpisodeView {
             }
             
             alert(`✅ Верно! +10 баллов!`);
-            
-            // Переходим к следующему эпизоду
-            setTimeout(() => {
-                const nextEpisodeId = `${episode.chapter}_${parseInt(episode.id) + 1}`;
-                console.log('Переход к:', nextEpisodeId);
-                
-                if (window.episodes[nextEpisodeId]) {
-                    this.show(nextEpisodeId);
-                } else {
-                    alert('🎉 Поздравляем! Вы завершили главу 1!');
-                    this.goBack();
-                }
-            }, 1000);
-            
         } else {
-            alert('❌ Неверно. Попробуй ещё раз!');
+            // Эпизод уже пройден, просто переходим дальше
+            alert(`✅ Верно! Этот эпизод уже пройден.`);
         }
+        
+        // Переходим к следующему эпизоду
+        setTimeout(() => {
+            const nextEpisodeId = `${episode.chapter}_${parseInt(episode.id) + 1}`;
+            console.log('Переход к:', nextEpisodeId);
+            
+            if (window.episodes[nextEpisodeId]) {
+                this.show(nextEpisodeId);
+            } else {
+                alert('🎉 Поздравляем! Вы завершили главу 1!');
+                this.goBack();
+            }
+        }, 1000);
+        
+    } else {
+        alert('❌ Неверно. Попробуй ещё раз!');
     }
+}
     
     static nextEpisode(currentEpisodeId) {
         console.log('Переход к следующему эпизоду:', currentEpisodeId);
