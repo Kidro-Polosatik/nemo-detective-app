@@ -12,7 +12,7 @@ class Menu {
         
         container.innerHTML = `
             <div class="main-menu">
-                <div class="logo">🕵️ НЕЖИВОЙ ДЕТЕКТИВ</div>
+                <div class="logo">🕵️ ВЕЧНЫЙ ДЕТЕКТИВ</div>
                 <div class="subtitle">Каждая загадка — шаг к разгадке вечной тайны</div>
                 
                 <button class="menu-btn" onclick="Menu.startChapter(1)">
