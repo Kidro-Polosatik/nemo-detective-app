@@ -9,49 +9,63 @@
 </head>
 <body>
     <div class="app-container" id="app-container">
-        <!-- Приложение загружается здесь -->
         <div class="loading">Загрузка детективного дела...</div>
     </div>
 
-    <!-- Подключаем компоненты -->
-    <script src="js/components/menu.js"></script>
-    <script src="js/components/episode-view.js"></script>
-    <script src="js/components/rating.js"></script>
-    
-    <!-- Подключаем эпизоды Главы 1 -->
-    <script src="js/episodes/chapter1/episode1.js"></script>
-    <script src="js/episodes/chapter1/episode2.js"></script>
-    <script src="js/episodes/chapter1/episode3.js"></script>
-    <script src="js/episodes/chapter1/episode4.js"></script>
-    <script src="js/episodes/chapter1/episode5.js"></script>
-    <script src="js/episodes/chapter1/episode6.js"></script>
-    <script src="js/episodes/chapter1/episode7.js"></script>
-
-    <!-- Глобальные ссылки для отладки -->
+    <!-- Инициализация глобальных переменных ПЕРВЫМИ -->
     <script>
-        // Принудительно делаем компоненты глобальными СРАЗУ
-        console.log('🔧 Устанавливаем глобальные ссылки...');
-        if (typeof Menu !== 'undefined') {
-            window.Menu = Menu;
-            console.log('✅ Menu установлен глобально');
-        }
-        if (typeof EpisodeView !== 'undefined') {
-            window.EpisodeView = EpisodeView;
-            console.log('✅ EpisodeView установлен глобально');
-        }
-        if (typeof Rating !== 'undefined') {
-            window.Rating = Rating;
-            console.log('✅ Rating установлен глобально');
-        }
+        // Инициализация глобальной переменной для эпизодов ДО загрузки компонентов
+        window.episodes = window.episodes || {};
+        window.appState = window.appState || {
+            currentView: 'menu',
+            currentEpisodeId: null,
+            userData: {
+                score: 0,
+                currentEpisode: 1,
+                completedEpisodes: []
+            }
+        };
         
-        console.log('📋 Проверка компонентов:');
-        console.log('- Menu:', typeof window.Menu);
-        console.log('- EpisodeView:', typeof window.EpisodeView);
-        console.log('- Rating:', typeof window.Rating);
-        console.log('- Episodes:', Object.keys(window.episodes || {}));
+        // Система обработки ошибок
+        window.handleScriptError = function(error) {
+            console.error('Ошибка загрузки скрипта:', error);
+            const container = document.getElementById('app-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="error" style="text-align: center; padding: 20px; color: #ff6b6b;">
+                        <h2>Ошибка загрузки</h2>
+                        <p>${error}</p>
+                        <button onclick="location.reload()" style="
+                            background: #ffd700; 
+                            color: #1a1a2e; 
+                            border: none; 
+                            padding: 10px 20px; 
+                            border-radius: 5px; 
+                            cursor: pointer;
+                            margin-top: 10px;
+                        ">Перезагрузить</button>
+                    </div>
+                `;
+            }
+        };
     </script>
-    
-    <!-- Главный скрипт приложения (ПОСЛЕ установки глобальных ссылок) -->
-    <script src="js/app.js"></script>
+
+    <!-- ПРАВИЛЬНЫЙ ПОРЯДОК: сначала эпизоды, потом компоненты -->
+    <!-- Эпизоды Главы 1 -->
+    <script src="js/episodes/chapter1/episode1.js" onerror="handleScriptError('Не удалось загрузить episode1.js')"></script>
+    <script src="js/episodes/chapter1/episode2.js" onerror="handleScriptError('Не удалось загрузить episode2.js')"></script>
+    <script src="js/episodes/chapter1/episode3.js" onerror="handleScriptError('Не удалось загрузить episode3.js')"></script>
+    <script src="js/episodes/chapter1/episode4.js" onerror="handleScriptError('Не удалось загрузить episode4.js')"></script>
+    <script src="js/episodes/chapter1/episode5.js" onerror="handleScriptError('Не удалось загрузить episode5.js')"></script>
+    <script src="js/episodes/chapter1/episode6.js" onerror="handleScriptError('Не удалось загрузить episode6.js')"></script>
+    <script src="js/episodes/chapter1/episode7.js" onerror="handleScriptError('Не удалось загрузить episode7.js')"></script>
+
+    <!-- Компоненты -->
+    <script src="js/components/menu.js" onerror="handleScriptError('Не удалось загрузить menu.js')"></script>
+    <script src="js/components/episode-view.js" onerror="handleScriptError('Не удалось загрузить episode-view.js')"></script>
+    <script src="js/components/rating.js" onerror="handleScriptError('Не удалось загрузить rating.js')"></script>
+
+    <!-- Главный скрипт приложения -->
+    <script src="js/app.js" onerror="handleScriptError('Не удалось загрузить app.js')"></script>
 </body>
 </html>
