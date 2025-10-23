@@ -46,44 +46,103 @@ class NemoDetectiveApp {
         this.start();
     }
     
-    start() {
-        console.log('🕵️ Вечный Детектив - приложение запущено!');
-        console.log('Загружено эпизодов:', Object.keys(window.episodes || {}).length);
-        console.log('Компоненты:', {
-            Menu: typeof Menu,
-            EpisodeView: typeof EpisodeView, 
-            Rating: typeof Rating
-        });
-        
-        // Показываем главное меню
-        try {
-            Menu.show();
-            console.log('Главное меню показано успешно');
-        } catch (error) {
-            console.error('Ошибка при показе меню:', error);
-            this.showError('Ошибка запуска: ' + error.message);
-        }
+   start() {
+    console.log('🕵️ Вечный Детектив - приложение запущено!');
+    console.log('Загружено эпизодов:', Object.keys(window.episodes || {}).length);
+    console.log('Компоненты:', {
+        Menu: typeof Menu,
+        EpisodeView: typeof EpisodeView, 
+        Rating: typeof Rating
+    });
+    
+    // Проверяем что Menu доступен глобально
+    if (typeof window.Menu === 'undefined') {
+        console.error('Menu не доступен глобально');
+        window.Menu = Menu; // Принудительно устанавливаем
     }
+    
+    // Показываем главное меню
+    try {
+        Menu.show();
+        console.log('Главное меню показано успешно');
+    } catch (error) {
+        console.error('Ошибка при показе меню:', error);
+        this.showError('Ошибка запуска: ' + error.message);
+    }
+}
     
 loadUserData() {
     try {
-        const savedData = localStorage.getItem('nemo_detective_data');
-        if (savedData) {
-            const parsedData = JSON.parse(savedData);
-            // Добавляем completedEpisodes если его нет
-            if (!parsedData.completedEpisodes) {
-                parsedData.completedEpisodes = [];
-            }
-            window.appState.userData = parsedData;
-            console.log('Данные пользователя загружены:', window.appState.userData);
+        // Пробуем получить данные из Telegram Cloud Storage
+        if (this.tg && this.tg.CloudStorage) {
+            this.tg.CloudStorage.getItem('nemo_detective_data', (error, cloudData) => {
+                if (!error && cloudData) {
+                    const parsedData = JSON.parse(cloudData);
+                    this.initUserData(parsedData);
+                    console.log('Данные загружены из Cloud Storage:', parsedData);
+                } else {
+                    // Если в облаке нет, пробуем локально
+                    this.loadFromLocalStorage();
+                }
+            });
         } else {
-            console.log('Сохранённых данных нет, используем по умолчанию');
-            // Инициализируем completedEpisodes по умолчанию
-            window.appState.userData.completedEpisodes = [];
+            // Fallback на localStorage
+            this.loadFromLocalStorage();
         }
     } catch (e) {
         console.error('Ошибка загрузки данных:', e);
+        this.initUserData();
+    }
+}
+
+loadFromLocalStorage() {
+    const savedData = localStorage.getItem('nemo_detective_data');
+    if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        this.initUserData(parsedData);
+        console.log('Данные загружены из localStorage:', parsedData);
+    } else {
+        console.log('Сохранённых данных нет, используем по умолчанию');
+        this.initUserData();
+    }
+}
+
+initUserData(parsedData = null) {
+    window.appState.userData = parsedData || {
+        score: 0,
+        currentEpisode: 1,
+        completedEpisodes: []
+    };
+    
+    // Добавляем completedEpisodes если его нет
+    if (!window.appState.userData.completedEpisodes) {
         window.appState.userData.completedEpisodes = [];
+    }
+}
+
+// ДОБАВИТЬ метод сохранения
+saveUserData() {
+    try {
+        const dataString = JSON.stringify(window.appState.userData);
+        
+        // Пробуем сохранить в Telegram Cloud Storage
+        if (this.tg && this.tg.CloudStorage) {
+            this.tg.CloudStorage.setItem('nemo_detective_data', dataString, (error) => {
+                if (error) {
+                    console.warn('Не удалось сохранить в Cloud Storage:', error);
+                    // Fallback на localStorage
+                    localStorage.setItem('nemo_detective_data', dataString);
+                } else {
+                    console.log('Данные сохранены в Cloud Storage');
+                }
+            });
+        } else {
+            // Fallback на localStorage
+            localStorage.setItem('nemo_detective_data', dataString);
+            console.log('Данные сохранены в localStorage');
+        }
+    } catch (e) {
+        console.error('Ошибка сохранения данных:', e);
     }
 }
     
