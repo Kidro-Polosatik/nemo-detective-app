@@ -9,18 +9,11 @@ class Rating {
         }
         
         const userData = window.appState?.userData || { score: 0 };
-        
-        // Заглушка рейтинга (в будущем будет с сервера)
-        const topPlayers = [
-            { name: "Шерлок Холмс", score: 150 },
-            { name: "Эркюль Пуаро", score: 130 },
-            { name: "Мисс Марпл", score: 110 },
-            { name: "Вы", score: userData.score, isCurrentUser: true }
-        ].sort((a, b) => b.score - a.score);
+        const topPlayers = this.getTopPlayers();
         
         container.innerHTML = `
             <div class="rating-container">
-                <div class="rating-title">🏆 ТОП ДЕТЕКТИВОВ</div>
+                <div class="rating-title">🏆 РЕЙТИНГ ДЕТЕКТИВОВ</div>
                 <div class="rating-list">
                     ${topPlayers.map((player, index) => `
                         <div class="rating-item ${player.isCurrentUser ? 'current-user' : ''}">
@@ -29,6 +22,9 @@ class Rating {
                             <span class="score">${player.score} баллов</span>
                         </div>
                     `).join('')}
+                </div>
+                <div style="text-align: center; margin: 20px 0; color: #b8a050;">
+                    Всего детективов: ${topPlayers.length}
                 </div>
                 <button class="back-btn" onclick="Rating.goBack()">← НАЗАД В МЕНЮ</button>
             </div>
@@ -40,6 +36,39 @@ class Rating {
         }
         
         console.log('✅ Рейтинг показан');
+    }
+    
+    static getTopPlayers() {
+        // В реальном приложении здесь был бы запрос к серверу
+        // Сейчас используем демо-данные + текущего пользователя
+        
+        const demoPlayers = [
+            { name: "Шерлок Холмс", score: 150, userId: "sherlock" },
+            { name: "Эркюль Пуаро", score: 130, userId: "poirot" },
+            { name: "Мисс Марпл", score: 110, userId: "marple" },
+            { name: "Ниро Вульф", score: 95, userId: "wolfe" },
+            { name: "Филип Марлоу", score: 80, userId: "marlowe" }
+        ];
+        
+        // Добавляем текущего пользователя
+        const currentUser = window.appState?.userData;
+        if (currentUser) {
+            const userPlayer = {
+                name: "Вы",
+                score: currentUser.score,
+                userId: currentUser.userId,
+                isCurrentUser: true
+            };
+            
+            // Объединяем и сортируем по убыванию очков
+            const allPlayers = [...demoPlayers, userPlayer]
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Топ-10
+            
+            return allPlayers;
+        }
+        
+        return demoPlayers.slice(0, 10);
     }
     
     static goBack() {
