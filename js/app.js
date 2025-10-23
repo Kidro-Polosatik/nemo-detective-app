@@ -54,29 +54,12 @@ class NemoDetectiveApp {
     }
     
     initAppState() {
-        // Используем существующее состояние или создаем новое
-        window.appState = window.appState || {
-            currentView: 'menu',
-            currentEpisodeId: null,
-            userData: {
-                score: 0,
-                currentEpisode: 1,
-                completedEpisodes: []
-            }
-        };
-        
-        // Загрузка пользовательских данных
+        // Загружаем данные ДО создания состояния
         this.loadUserData();
     }
     
     start() {
         console.log('🎬 Вечный Детектив - приложение запущено!');
-        
-        // Принудительная глобальная регистрация для надежности
-        if (typeof window.Menu === 'undefined' && typeof Menu !== 'undefined') {
-            window.Menu = Menu;
-            console.log('🔧 Menu зарегистрирован глобально из app.js');
-        }
         
         // Показываем главное меню
         try {
@@ -100,7 +83,7 @@ class NemoDetectiveApp {
                     if (!error && cloudData) {
                         try {
                             const parsedData = JSON.parse(cloudData);
-                            this.mergeUserData(parsedData);
+                            this.initWithUserData(parsedData);
                             console.log('✅ Данные загружены из Cloud Storage:', parsedData);
                         } catch (parseError) {
                             console.error('❌ Ошибка парсинга Cloud Storage данных:', parseError);
@@ -117,7 +100,7 @@ class NemoDetectiveApp {
             }
         } catch (e) {
             console.error('❌ Ошибка загрузки данных:', e);
-            this.initUserData();
+            this.initWithDefaultData();
         }
     }
 
@@ -126,38 +109,58 @@ class NemoDetectiveApp {
             const savedData = localStorage.getItem('nemo_detective_data');
             if (savedData) {
                 const parsedData = JSON.parse(savedData);
-                this.mergeUserData(parsedData);
+                this.initWithUserData(parsedData);
                 console.log('✅ Данные загружены из localStorage:', parsedData);
             } else {
                 console.log('ℹ️ Сохранённых данных нет, используем по умолчанию');
-                this.initUserData();
+                this.initWithDefaultData();
             }
         } catch (e) {
             console.error('❌ Ошибка загрузки из localStorage:', e);
-            this.initUserData();
+            this.initWithDefaultData();
         }
     }
 
-    mergeUserData(parsedData) {
-        if (!window.appState.userData) {
-            window.appState.userData = {};
+    initWithUserData(userData) {
+        window.appState = {
+            currentView: 'menu',
+            currentEpisodeId: null,
+            userData: {
+                score: userData.score || 0,
+                currentEpisode: Math.max(userData.currentEpisode || 1, 1),
+                completedEpisodes: Array.isArray(userData.completedEpisodes) ? 
+                    userData.completedEpisodes : [],
+                userId: this.getUserId()
+            }
+        };
+    }
+
+    initWithDefaultData() {
+        window.appState = {
+            currentView: 'menu',
+            currentEpisodeId: null,
+            userData: {
+                score: 0,
+                currentEpisode: 1,
+                completedEpisodes: [],
+                userId: this.getUserId()
+            }
+        };
+    }
+
+    getUserId() {
+        // Генерируем уникальный ID пользователя
+        if (this.tg && this.tg.initDataUnsafe && this.tg.initDataUnsafe.user) {
+            return `tg_${this.tg.initDataUnsafe.user.id}`;
         }
         
-        // Объединяем данные, сохраняя существующие значения по умолчанию
-        window.appState.userData = {
-            score: parsedData.score || 0,
-            currentEpisode: Math.max(parsedData.currentEpisode || 1, 1),
-            completedEpisodes: Array.isArray(parsedData.completedEpisodes) ? 
-                parsedData.completedEpisodes : []
-        };
-    }
-
-    initUserData() {
-        window.appState.userData = {
-            score: 0,
-            currentEpisode: 1,
-            completedEpisodes: []
-        };
+        // Для браузера используем localStorage ID
+        let userId = localStorage.getItem('nemo_user_id');
+        if (!userId) {
+            userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('nemo_user_id', userId);
+        }
+        return userId;
     }
 
     // Метод сохранения данных
@@ -168,7 +171,15 @@ class NemoDetectiveApp {
                 return;
             }
             
-            const dataString = JSON.stringify(window.appState.userData);
+            const dataToSave = {
+                score: window.appState.userData.score,
+                currentEpisode: window.appState.userData.currentEpisode,
+                completedEpisodes: window.appState.userData.completedEpisodes,
+                userId: window.appState.userData.userId,
+                lastSave: Date.now()
+            };
+            
+            const dataString = JSON.stringify(dataToSave);
             
             // Пробуем сохранить в Telegram Cloud Storage
             if (this.tg && this.tg.CloudStorage) {
@@ -265,10 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     typeof EpisodeView !== 'undefined' &&
                                     Object.keys(window.episodes || {}).length > 0;
         
-        if (hasRequiredComponents) {
-            console.log('✅ Все компоненты загружены, запускаем приложение');
-            // Приложение уже запущено через конструктор
-        } else {
+        if (!hasRequiredComponents) {
             console.error('❌ Не все компоненты загрузились');
             const errorDetails = {
                 Menu: typeof Menu,
