@@ -46,6 +46,16 @@
     border-color: #ffd700;
 }
 
+.answer-section {
+    margin: 20px 0;
+}
+
+.error-container {
+    text-align: center;
+    padding: 40px 20px;
+    color: #ff6b6b;
+}
+
 /* Адаптивность эпизодов */
 @media (max-width: 480px) {
     .episode-container {

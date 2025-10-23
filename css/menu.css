@@ -29,6 +29,7 @@
         linear-gradient(45deg, transparent 49%, rgba(212, 175, 55, 0.02) 50%, transparent 51%);
     background-size: 100% 100%, 100% 100%, 30px 30px;
     pointer-events: none;
+    z-index: 1;
 }
 
 /* Заголовок в стиле старинной вывески */
@@ -104,6 +105,7 @@
     box-shadow: 
         0 4px 20px rgba(212, 175, 55, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 2;
 }
 
 .menu-btn::before {

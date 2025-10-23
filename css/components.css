@@ -64,6 +64,7 @@
     cursor: pointer;
     transition: transform 0.2s;
     font-family: 'Georgia', serif;
+    margin: 10px 0;
 }
 
 .submit-btn:hover {
@@ -91,6 +92,19 @@
     line-height: 2;
 }
 
+.rating-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.rating-item.current-user {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
 .back-btn {
     background: rgba(255, 255, 255, 0.1);
     color: white;
@@ -113,5 +127,10 @@
     .start-btn {
         font-size: 1.1rem;
         padding: 18px 25px;
+    }
+    
+    .rating-container {
+        padding: 20px 15px;
+        margin: 10px;
     }
 }
