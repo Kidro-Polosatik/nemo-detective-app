@@ -48,18 +48,29 @@ class EpisodeView {
                 </div>
                 <div class="episode-text">${episode.text}</div>
                 
-                ${episode.hasInput ? `
+                ${episode.hasInput && !isCompleted ? `
                 <div class="answer-section">
                     <input type="text" class="answer-input" placeholder="Введите ваш ответ..." id="answer-input">
                     <button class="submit-btn" onclick="EpisodeView.submitAnswer('${fullEpisodeId}')">
-                        🔍 ${isCompleted ? 'ПРОЙДЕНО' : 'ОТПРАВИТЬ ОТВЕТ'}
+                        🔍 ОТПРАВИТЬ ОТВЕТ
                     </button>
                 </div>
-                ` : `
+                ` : ''}
+                
+                ${isCompleted ? `
+                <div style="text-align: center; margin: 20px 0;">
+                    <div style="color: #ffd700; font-size: 1.2rem; margin-bottom: 15px;">✅ Эпизод завершён!</div>
+                    <button class="submit-btn" onclick="EpisodeView.nextEpisode('${fullEpisodeId}')">
+                        ➡️ ПЕРЕЙТИ К СЛЕДУЮЩЕМУ
+                    </button>
+                </div>
+                ` : ''}
+                
+                ${!episode.hasInput && !isCompleted ? `
                 <button class="submit-btn" onclick="EpisodeView.nextEpisode('${fullEpisodeId}')">
                     ➡️ ДАЛЕЕ
                 </button>
-                `}
+                ` : ''}
                 
                 <button class="back-btn" onclick="EpisodeView.goBack()">← ВЕРНУТЬСЯ В МЕНЮ</button>
             </div>
@@ -114,9 +125,17 @@ class EpisodeView {
     }
     
     static handleCorrectAnswer(fullEpisodeId, episode) {
+        // Проверяем, что эпизод еще не был пройден
+        if (window.appState?.userData?.completedEpisodes?.includes(fullEpisodeId)) {
+            console.log('⚠️ Эпизод уже был пройден ранее');
+            this.showAlert('Этот эпизод уже был пройден!');
+            this.nextEpisode(fullEpisodeId);
+            return;
+        }
+        
         // Начисляем баллы и обновляем прогресс
         if (window.appState && window.appState.userData) {
-            // Увеличиваем счет
+            // Увеличиваем счет только если эпизод еще не пройден
             window.appState.userData.score += 10;
             
             // Обновляем текущий эпизод
@@ -136,14 +155,16 @@ class EpisodeView {
             this.saveUserData();
             
             this.showAlert(`✅ Верно! +10 баллов!`);
+            
+            // Показываем обновленный эпизод с сообщением о завершении
+            setTimeout(() => {
+                this.show(fullEpisodeId);
+            }, 1500);
+            
         } else {
             this.showAlert(`✅ Верно!`);
-        }
-        
-        // Переходим к следующему эпизоду
-        setTimeout(() => {
             this.nextEpisode(fullEpisodeId);
-        }, 1500);
+        }
     }
     
     static nextEpisode(currentEpisodeId) {
@@ -167,8 +188,23 @@ class EpisodeView {
     }
     
     static showChapterComplete() {
-        this.showAlert('🎉 Поздравляем! Вы завершили главу 1!');
-        this.goBack();
+        const container = document.getElementById('app-container');
+        if (!container) return;
+        
+        container.innerHTML = `
+            <div class="episode-container">
+                <div class="episode-title" style="color: #ffd700; font-size: 1.6em;">
+                    🎉 ГЛАВА ЗАВЕРШЕНА!
+                </div>
+                <div class="episode-text" style="text-align: center; font-size: 1.2em;">
+                    Поздравляем! Вы успешно завершили Главу 1.<br><br>
+                    Ваш текущий счёт: <strong>${window.appState?.userData?.score || 0} баллов</strong>
+                </div>
+                <button class="submit-btn" onclick="EpisodeView.goBack()" style="margin-top: 20px;">
+                    🏠 ВЕРНУТЬСЯ В МЕНЮ
+                </button>
+            </div>
+        `;
     }
     
     static goBack() {
