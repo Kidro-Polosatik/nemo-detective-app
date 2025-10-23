@@ -105,32 +105,24 @@
     border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
+/* Стили для архива эпизодов */
+.archive-episode {
+    transition: all 0.3s ease;
+}
+
+.archive-episode.completed:hover {
+    background: rgba(255, 215, 0, 0.15) !important;
+    border-color: rgba(255, 215, 0, 0.5) !important;
+}
+
+.archive-episode.locked {
+    opacity: 0.7;
+}
+
 .back-btn {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     border: 1px solid #444;
     padding: 12px 24px;
     border-radius: 8px;
-    cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
-    font-family: 'Georgia', serif;
-}
-
-/* Адаптивность компонентов */
-@media (max-width: 480px) {
-    .menu-btn {
-        padding: 16px 20px;
-        font-size: 1rem;
-    }
-    
-    .start-btn {
-        font-size: 1.1rem;
-        padding: 18px 25px;
-    }
-    
-    .rating-container {
-        padding: 20px 15px;
-        margin: 10px;
-    }
-}
+    cursor:
