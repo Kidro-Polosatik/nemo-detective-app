@@ -46,6 +46,4 @@ const episode2 = {
 
 Действительно, стишок казался несуразицей, но точно им не был. Похоже, я и правда был детективом, потому что увидел в этих строчках подсказку.`,
     hasInput: true,
-    correctAnswers: ["лос-анджелесское национальное кладбище", "los angeles national cemetery", "кладбище", "national cemetery"]
-};
 window.episodes['1_2'] = episode2;

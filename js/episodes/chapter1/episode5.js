@@ -40,6 +40,4 @@ const episode5 = {
 
 — Я принесу бумагу, - прошептал Юп.`,
     hasInput: true,
-    correctAnswers: ["часовня", "chapel", "церковь"]
-};
 window.episodes['1_5'] = episode5;

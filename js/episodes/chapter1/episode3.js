@@ -34,6 +34,4 @@ const episode3 = {
 
 "Для птицеводов! Главный деликатес египетских кукушек острый соус табаско изумителен!"`,
     hasInput: true,
-    correctAnswers: ["где кости", "кости", "where are the bones"]
-};
 window.episodes['1_3'] = episode3;

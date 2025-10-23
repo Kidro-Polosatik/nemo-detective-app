@@ -36,6 +36,4 @@ const episode6 = {
 
 — Сокровищ тут нету… - Перечитал Юп. – Мистер Немо, я знаю, где они.`,
     hasInput: true,
-    correctAnswers: ["музей", "museum", "галерея"]
-};
 window.episodes['1_6'] = episode6;
