@@ -30,3 +30,23 @@ body {
         padding: 0 10px;
     }
 }
+
+html, body {
+    height: 100%;
+    overflow: hidden; /* Убираем прокрутку */
+}
+
+.app-container {
+    max-width: 100%;
+    height: 100vh; /* Занимаем всю высоту окна */
+    padding: 0;
+    overflow-y: auto; /* Прокрутка только если контент не помещается */
+}
+
+/* Для Telegram WebApp на десктопе */
+@media (min-width: 768px) {
+    .app-container {
+        max-height: 90vh; /* Ограничиваем высоту на десктопе */
+        margin: 0 auto;
+    }
+}
