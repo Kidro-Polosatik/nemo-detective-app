@@ -130,7 +130,7 @@ class NemoDetectiveApp {
                 currentEpisode: Math.max(userData.currentEpisode || 1, 1),
                 completedEpisodes: Array.isArray(userData.completedEpisodes) ? 
                     userData.completedEpisodes : [],
-                userId: this.getUserId()
+                userId: userData.userId || this.getUserId()
             }
         };
     }
@@ -196,6 +196,12 @@ class NemoDetectiveApp {
                 // Fallback на localStorage
                 this.saveToLocalStorage(dataString);
             }
+            
+            // Сохраняем в глобальный рейтинг
+            if (typeof Rating !== 'undefined' && typeof Rating.saveCurrentUserToGlobal === 'function') {
+                Rating.saveCurrentUserToGlobal();
+            }
+            
         } catch (e) {
             console.error('❌ Ошибка сохранения данных:', e);
         }
