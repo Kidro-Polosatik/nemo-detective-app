@@ -124,22 +124,24 @@ class Menu {
                 
                 <div class="main-title">
                     <h1>АРХИВ ДЕЛ</h1>
-                    <div class="subtitle">ПРОГРЕСС</div>
+                    <div class="subtitle">ПРОГРЕСС И ПОВТОРЕНИЕ</div>
                 </div>
                 
-                <div style="z-index: 2; text-align: center; margin: 40px 0; max-width: 320px;">
+                <div style="z-index: 2; text-align: center; margin: 30px 0; max-width: 360px;">
                     <div style="margin: 20px 0; font-size: 1.2rem; color: #ffd700;">
                         Общий прогресс: ${progress}%
                     </div>
-                    <div style="margin: 15px 0; font-size: 1.1rem;">
-                        Глава 1: "Неожиданная встреча"
-                    </div>
-                    <div style="margin: 10px 0; font-size: 1rem; color: #b8a050;">
-                        ${this.getEpisodeProgress(1, userData)}
-                    </div>
+                    
                     <div style="margin: 25px 0; padding: 15px; background: rgba(255,215,0,0.1); border-radius: 10px;">
                         <div style="font-size: 1rem; margin-bottom: 10px;">Завершено эпизодов: ${completedCount}/${totalEpisodes}</div>
                         <div style="font-size: 1rem;">Текущий счёт: ${userData.score} баллов</div>
+                    </div>
+                    
+                    <div style="text-align: left; margin: 25px 0;">
+                        <div style="font-size: 1.1rem; color: #ffd700; margin-bottom: 15px; text-align: center;">
+                            Глава 1: "Неожиданная встреча"
+                        </div>
+                        ${this.renderEpisodeList(1, userData)}
                     </div>
                 </div>
                 
@@ -154,19 +156,70 @@ class Menu {
         }
     }
     
-    static getEpisodeProgress(chapter, userData) {
+    static renderEpisodeList(chapter, userData) {
         const episodes = Object.keys(window.episodes || {})
             .filter(id => id.startsWith(chapter + '_'))
-            .sort();
+            .sort((a, b) => {
+                const aNum = parseInt(a.split('_')[1]);
+                const bNum = parseInt(b.split('_')[1]);
+                return aNum - bNum;
+            });
         
-        let progress = '';
+        let html = '';
         episodes.forEach(episodeId => {
             const episode = window.episodes[episodeId];
             const isCompleted = userData.completedEpisodes.includes(episodeId);
-            progress += `Эпизод ${episode.id}: ${episode.title} ${isCompleted ? '✅' : '❌'}\n`;
+            const isAvailable = isCompleted || this.isEpisodeAvailable(episodeId, userData);
+            
+            html += `
+                <div class="archive-episode ${isCompleted ? 'completed' : 'locked'}" 
+                     style="margin: 12px 0; padding: 12px; border-radius: 8px; 
+                            background: ${isCompleted ? 'rgba(255,215,0,0.1)' : 'rgba(128,128,128,0.1)'}; 
+                            border: 1px solid ${isCompleted ? 'rgba(255,215,0,0.3)' : 'rgba(128,128,128,0.3)'};">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: ${isCompleted ? '#ffd700' : '#888'};">
+                                Эпизод ${episode.id}: ${episode.title}
+                            </div>
+                            <div style="font-size: 0.9rem; color: ${isCompleted ? '#b8a050' : '#666'}; margin-top: 5px;">
+                                ${isCompleted ? '✅ Завершён' : '🔒 Недоступен'}
+                            </div>
+                        </div>
+                        ${isAvailable ? `
+                        <button class="menu-btn" onclick="Menu.playEpisode('${episodeId}')" 
+                                style="padding: 8px 16px; font-size: 0.9rem; margin-left: 10px;">
+                            ${isCompleted ? '🔄 Повторить' : '▶️ Играть'}
+                        </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
         });
         
-        return progress;
+        return html;
+    }
+    
+    static isEpisodeAvailable(episodeId, userData) {
+        // Эпизод доступен если предыдущий завершен или это первый эпизод
+        const [chapter, episodeNum] = episodeId.split('_');
+        const episodeNumber = parseInt(episodeNum);
+        
+        if (episodeNumber === 1) return true; // Первый эпизод всегда доступен
+        
+        const prevEpisodeId = `${chapter}_${episodeNumber - 1}`;
+        return userData.completedEpisodes.includes(prevEpisodeId);
+    }
+    
+    static playEpisode(episodeId) {
+        console.log('🎮 Запуск эпизода из архива:', episodeId);
+        
+        if (typeof EpisodeView === 'undefined') {
+            console.error('❌ ERROR: EpisodeView не загружен');
+            this.showComponentError('EpisodeView');
+            return;
+        }
+        
+        EpisodeView.show(episodeId);
     }
     
     static showRating() {
@@ -212,12 +265,11 @@ class Menu {
                     <div class="subtitle">ТОП ИГРОКОВ</div>
                 </div>
                 
-                <div class="rating-list" style="z-index: 2; text-align: center; margin: 40px 0;">
-                    <div style="margin: 15px 0; font-size: 1.2rem;">1. Шерлок Холмс - 150 баллов</div>
-                    <div style="margin: 15px 0; font-size: 1.2rem;">2. Эркюль Пуаро - 130 баллов</div>
-                    <div style="margin: 15px 0; font-size: 1.2rem; color: #ffd700; font-weight: bold;">
-                        3. Вы - ${userData.score} баллов
+                <div style="z-index: 2; text-align: center; margin: 40px 0;">
+                    <div style="color: #b8a050; margin-bottom: 20px;">
+                        Рейтинг обновляется в реальном времени
                     </div>
+                    ${Rating.renderRealRating()}
                 </div>
                 
                 <button class="menu-btn" onclick="Menu.show()" style="max-width: 200px;">
