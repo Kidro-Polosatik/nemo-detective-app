@@ -73,6 +73,17 @@ class EpisodeView {
                 ` : ''}
                 
                 <button class="back-btn" onclick="EpisodeView.goBack()">← ВЕРНУТЬСЯ В МЕНЮ</button>
+                
+                <!-- Кнопка для отладки - показывает правильный ответ -->
+                ${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? `
+                <div style="margin-top: 20px; padding: 10px; background: rgba(255,0,0,0.1); border-radius: 5px; text-align: center;">
+                    <small style="color: #ff6b6b;">DEV MODE: </small>
+                    <button onclick="EpisodeView.showCorrectAnswer('${fullEpisodeId}')" 
+                            style="background: none; border: none; color: #ff6b6b; cursor: pointer; text-decoration: underline;">
+                        Показать правильный ответ
+                    </button>
+                </div>
+                ` : ''}
             </div>
         `;
     }
@@ -97,31 +108,62 @@ class EpisodeView {
         }
 
         const answerInput = document.getElementById('answer-input');
-        const answer = answerInput ? answerInput.value.trim().toLowerCase() : '';
+        let answer = answerInput ? answerInput.value.trim() : '';
         
-        console.log('📝 Ответ:', answer);
-        console.log('✅ Правильные ответы:', episode.correctAnswers);
+        console.log('📝 Исходный ответ:', answer);
+        
+        // Получаем правильные ответы из единого файла
+        const answerData = window.episodeAnswers ? window.episodeAnswers[fullEpisodeId] : null;
+        const correctAnswers = answerData ? answerData.answers : [];
+        const hint = answerData ? answerData.hint : 'нет подсказки';
+        
+        console.log('✅ Правильные ответы:', correctAnswers);
+        
+        if (!correctAnswers || correctAnswers.length === 0) {
+            console.error('❌ Нет правильных ответов для эпизода:', fullEpisodeId);
+            this.showAlert('Ошибка: ответы для этого эпизода не найдены');
+            return;
+        }
         
         if (!answer) {
             this.showAlert('Введите ответ перед отправкой!');
             return;
         }
         
-        const correctAnswers = episode.correctAnswers || [];
-        const normalizedAnswer = answer.replace(/\s+/g, ' ').trim();
+        // Нормализуем ответ: нижний регистр, убираем лишние пробелы, игнорируем пунктуацию
+        const normalizedAnswer = this.normalizeAnswer(answer);
         
         const isCorrect = correctAnswers.some(correct => {
-            const normalizedCorrect = String(correct).toLowerCase().replace(/\s+/g, ' ').trim();
+            const normalizedCorrect = this.normalizeAnswer(correct);
             return normalizedCorrect === normalizedAnswer;
         });
         
         console.log('🎯 Результат:', isCorrect);
+        console.log('🔍 Сравнение:', normalizedAnswer, 'vs', correctAnswers.map(c => this.normalizeAnswer(c)));
         
         if (isCorrect) {
             this.handleCorrectAnswer(fullEpisodeId, episode);
         } else {
-            this.showAlert('❌ Неверно. Попробуй ещё раз!');
+            // Показываем подсказку
+            this.showAlert(`❌ Неверно! Подсказка: попробуйте "${hint}"`);
+            
+            // Очищаем поле ввода для новой попытки
+            if (answerInput) {
+                answerInput.value = '';
+                answerInput.focus();
+            }
         }
+    }
+
+    // Метод для нормализации ответов (регистронезависимый)
+    static normalizeAnswer(text) {
+        return String(text)
+            .toLowerCase()                    // нижний регистр
+            .normalize('NFD')                // нормализуем Unicode (убираем диакритики)
+            .replace(/[\u0300-\u036f]/g, '') // убираем диакритические знаки
+            .replace(/[^\w\sа-яё]/gi, ' ')   // заменяем пунктуацию на пробелы (включая кириллицу)
+            .replace(/\s+/g, ' ')            // заменяем множественные пробелы на один
+            .trim();                         // убираем пробелы по краям
     }
     
     static handleCorrectAnswer(fullEpisodeId, episode) {
@@ -164,6 +206,16 @@ class EpisodeView {
         } else {
             this.showAlert(`✅ Верно!`);
             this.nextEpisode(fullEpisodeId);
+        }
+    }
+    
+    // Метод для отладки - показывает правильный ответ
+    static showCorrectAnswer(fullEpisodeId) {
+        const answerData = window.episodeAnswers ? window.episodeAnswers[fullEpisodeId] : null;
+        if (answerData && answerData.answers) {
+            this.showAlert(`Правильные ответы: ${answerData.answers.join(', ')}`);
+        } else {
+            this.showAlert('Ответы для этого эпизода не найдены');
         }
     }
     
