@@ -98,20 +98,8 @@ class Menu {
         // Заменяем плейсхолдер именем пользователя
         messageText = messageText.replace('{username}', userName);
         
-        // Разбиваем текст на параграфы
-        const paragraphs = messageText.split('\n\n').map(paragraph => {
-            if (paragraph.includes('AllertsDonate')) {
-                return `
-                    <p>${paragraph.replace('AllertsDonate', '')}</p>
-                    <div class="donate-link">
-                        <a href="https://allertsdonate.com" target="_blank" class="donate-btn">
-                            AllertsDonate
-                        </a>
-                    </div>
-                `;
-            }
-            return `<p>${paragraph}</p>`;
-        }).join('');
+        // Разбиваем текст на строки для анимированного появления
+        const lines = messageText.split('\n').filter(line => line.trim() !== '');
         
         container.innerHTML = `
             <div class="main-menu">
@@ -124,11 +112,48 @@ class Menu {
                 </div>
                 
                 <div class="secret-message-container">
-                    <div class="burnt-paper">
-                        <div class="burnt-edges"></div>
-                        <div class="message-content">
-                            ${paragraphs}
+                    <div class="vintage-paper burnt-edges-effect">
+                        <div class="paper-aging coffee-stain"></div>
+                        <div class="paper-aging ink-smudge"></div>
+                        <div class="fold-lines"></div>
+                        
+                        <div class="secret-message-text">
+                            ${lines.map((line, index) => {
+                                // Специальная обработка для строки с AllertsDonate
+                                if (line.includes('AllertsDonate')) {
+                                    const textBefore = line.replace('AllertsDonate', '').trim();
+                                    return `
+                                        <div class="message-line" style="animation-delay: ${0.5 + index * 0.7}s">
+                                            ${textBefore}
+                                        </div>
+                                        <div class="donate-link" style="animation-delay: ${0.5 + (index + 1) * 0.7}s">
+                                            <a href="https://allertsdonate.com" target="_blank" class="donate-btn">
+                                                AllertsDonate
+                                            </a>
+                                        </div>
+                                    `;
+                                }
+                                
+                                return `
+                                    <div class="message-line" style="animation-delay: ${0.5 + index * 0.7}s">
+                                        ${line}
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
+                        
+                        <!-- Эффект тления по краям -->
+                        <div class="burning-edges">
+                            <div class="burn-edge top-edge"></div>
+                            <div class="burn-edge right-edge"></div>
+                            <div class="burn-edge bottom-edge"></div>
+                            <div class="burn-edge left-edge"></div>
+                        </div>
+                        
+                        <!-- Эффект дыма -->
+                        <div class="smoke-effect"></div>
+                        <div class="smoke-effect" style="left: 30%; animation-delay: 2s;"></div>
+                        <div class="smoke-effect" style="left: 70%; animation-delay: 4s;"></div>
                     </div>
                 </div>
                 
@@ -332,7 +357,9 @@ class Menu {
                     <div style="color: #b8a050; margin-bottom: 20px;">
                         Рейтинг обновляется в реальном времени
                     </div>
-                    ${Rating.renderRealRating()}
+                    <div style="color: #b8a050; font-style: italic; padding: 20px;">
+                        Система рейтинга временно недоступна
+                    </div>
                 </div>
                 
                 <button class="menu-btn" onclick="Menu.show()" style="max-width: 200px;">
