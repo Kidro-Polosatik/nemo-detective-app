@@ -15,6 +15,9 @@ class Menu {
             return;
         }
         
+        // Получаем имя пользователя из Telegram или используем "Детектив"
+        const userName = this.getUserName();
+        
         // Определяем, новичок или нет
         const isNewUser = userData.currentEpisode === 1 && 
                          userData.score === 0 && 
@@ -55,7 +58,7 @@ class Menu {
 
                 <!-- Нижняя надпись и счет -->
                 <div class="bottom-section">
-                    <div class="quote">
+                    <div class="quote clickable-quote" onclick="Menu.showSecretMessage()">
                         Каждый ответ - ключ к вечной загадке
                     </div>
                     <div class="score-display">
@@ -72,6 +75,68 @@ class Menu {
         }
         
         console.log('✅ Меню показано успешно. Новый пользователь:', isNewUser);
+    }
+    
+    static getUserName() {
+        // Пробуем получить имя из Telegram
+        if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+            const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
+            return tgUser.first_name || tgUser.username || 'Детектив';
+        }
+        return 'Детектив';
+    }
+    
+    static showSecretMessage() {
+        const userName = this.getUserName();
+        const container = document.getElementById('app-container');
+        
+        if (!container) return;
+        
+        // Получаем текст из отдельного файла
+        let messageText = window.secretMessageText || `Здравствуй, ${userName}!\n\nЭто секретное сообщение о проекте.`;
+        
+        // Заменяем плейсхолдер именем пользователя
+        messageText = messageText.replace('{username}', userName);
+        
+        // Разбиваем текст на параграфы
+        const paragraphs = messageText.split('\n\n').map(paragraph => {
+            if (paragraph.includes('AllertsDonate')) {
+                return `
+                    <p>${paragraph.replace('AllertsDonate', '')}</p>
+                    <div class="donate-link">
+                        <a href="https://allertsdonate.com" target="_blank" class="donate-btn">
+                            AllertsDonate
+                        </a>
+                    </div>
+                `;
+            }
+            return `<p>${paragraph}</p>`;
+        }).join('');
+        
+        container.innerHTML = `
+            <div class="main-menu">
+                <div class="decoration top-left"></div>
+                <div class="decoration bottom-right"></div>
+                
+                <div class="main-title">
+                    <h1>СЕКРЕТНОЕ ПОСЛАНИЕ</h1>
+                    <div class="subtitle">ОБУГЛЕННОЕ ПИСЬМО</div>
+                </div>
+                
+                <div class="secret-message-container">
+                    <div class="burnt-paper">
+                        <div class="burnt-edges"></div>
+                        <div class="message-content">
+                            ${paragraphs}
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="menu-btn" onclick="Menu.show()" style="max-width: 200px; margin-top: 30px;">
+                    ВЕРНУТЬСЯ В МЕНЮ
+                </button>
+            </div>
+        `;
     }
     
     static startChapter(chapterNumber) {
@@ -200,11 +265,10 @@ class Menu {
     }
     
     static isEpisodeAvailable(episodeId, userData) {
-        // Эпизод доступен если предыдущий завершен или это первый эпизод
         const [chapter, episodeNum] = episodeId.split('_');
         const episodeNumber = parseInt(episodeNum);
         
-        if (episodeNumber === 1) return true; // Первый эпизод всегда доступен
+        if (episodeNumber === 1) return true;
         
         const prevEpisodeId = `${chapter}_${episodeNumber - 1}`;
         return userData.completedEpisodes.includes(prevEpisodeId);
@@ -241,7 +305,6 @@ class Menu {
             alert(`Ошибка: ${componentName} не загружен. Перезагрузите приложение.`);
         }
         
-        // Пробуем вернуться в меню
         setTimeout(() => {
             if (typeof Menu !== 'undefined') {
                 Menu.show();
