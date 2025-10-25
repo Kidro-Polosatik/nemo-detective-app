@@ -158,81 +158,6 @@
     width: 100%;
 }
 
-/* Стили для секретного сообщения */
-.secret-message-container {
-    z-index: 2;
-    margin: 30px 0;
-    max-width: 400px;
-    position: relative;
-}
-
-.burnt-paper {
-    background: 
-        linear-gradient(45deg, #2c1c0e 0%, #3a2818 50%, #2c1c0e 100%),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232c1c0e"/><path d="M0 0 L100 100 M100 0 L0 100" stroke="%235a3920" stroke-width="0.5" opacity="0.1"/></svg>');
-    border: 2px solid #5a3920;
-    border-radius: 8px;
-    padding: 25px;
-    position: relative;
-    box-shadow: 
-        0 4px 20px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.burnt-edges {
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: 
-        radial-gradient(circle at 0% 0%, transparent 70%, #1a0f06 71%, #1a0f06 80%, transparent 81%),
-        radial-gradient(circle at 100% 0%, transparent 70%, #1a0f06 71%, #1a0f06 80%, transparent 81%),
-        radial-gradient(circle at 0% 100%, transparent 70%, #1a0f06 71%, #1a0f06 80%, transparent 81%),
-        radial-gradient(circle at 100% 100%, transparent 70%, #1a0f06 71%, #1a0f06 80%, transparent 81%);
-    pointer-events: none;
-}
-
-.message-content {
-    color: #d4af37;
-    font-family: 'Georgia', serif;
-    line-height: 1.6;
-    text-align: left;
-}
-
-.message-content p {
-    margin-bottom: 15px;
-}
-
-.message-content strong {
-    color: #ffd700;
-}
-
-.donate-link {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.donate-btn {
-    display: inline-block;
-    background: linear-gradient(45deg, #ffd700, #ffed4e);
-    color: #1a1a2e;
-    text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-family: 'Georgia', serif;
-    transition: transform 0.2s;
-    border: none;
-    cursor: pointer;
-}
-
-.donate-btn:hover {
-    transform: translateY(-2px);
-    text-decoration: none;
-    color: #1a1a2e;
-}
-
 /* Адаптивность компонентов */
 @media (max-width: 480px) {
     .menu-btn {
@@ -248,13 +173,5 @@
     .rating-container {
         padding: 20px 15px;
         margin: 10px;
-    }
-    
-    .secret-message-container {
-        max-width: 320px;
-    }
-    
-    .burnt-paper {
-        padding: 20px 15px;
     }
 }
