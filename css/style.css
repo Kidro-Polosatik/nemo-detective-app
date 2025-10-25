@@ -1,5 +1,6 @@
-/* Главный файл стилей - импортирует все части */
 @import url('base.css');
 @import url('menu.css');
 @import url('episodes.css');
 @import url('components.css');
+@import url('secret-document.css');
+@import url('secret-message-style.css')
