@@ -88,6 +88,60 @@ class VNEngine {
     }
 }
 
+// ДОБАВЬ В КОНЕЦ vn-engine.js:
+
+// Система управления сценами в эпизоде
+VNEngine.initEpisode = function(episode) {
+    console.log('🎬 Инициализация эпизода ВН:', episode.title);
+    this.currentEpisode = episode;
+    this.currentSceneIndex = 0;
+    this.scenes = episode.vnScenes || [];
+};
+
+VNEngine.showCurrentScene = function() {
+    if (!this.scenes || this.scenes.length === 0) {
+        console.error('❌ Нет сцен для показа');
+        return;
+    }
+    
+    if (this.currentSceneIndex >= this.scenes.length) {
+        console.log('🎉 Эпизод завершен!');
+        this.episodeComplete();
+        return;
+    }
+    
+    const scene = this.scenes[this.currentSceneIndex];
+    this.showScene(scene);
+};
+
+VNEngine.nextScene = function() {
+    this.currentSceneIndex++;
+    this.showCurrentScene();
+};
+
+VNEngine.episodeComplete = function() {
+    // Здесь будет логика завершения эпизода
+    console.log('🏁 Эпизод завершен, возврат в меню');
+    if (window.Menu) {
+        Menu.show();
+    }
+};
+
+// Обновляем метод next для перехода между сценами
+VNEngine.next = function() {
+    if (this.isTyping) {
+        // Пропустить анимацию печати
+        const element = document.getElementById('dialog-text');
+        if (element && this.currentScene) {
+            element.innerHTML = this.currentScene.dialog.text;
+            this.isTyping = false;
+        }
+    } else {
+        // Переход к следующей сцене
+        this.nextScene();
+    }
+};
+
 // Автоматическая инициализация
 document.addEventListener('DOMContentLoaded', function() {
     VNEngine.init();
