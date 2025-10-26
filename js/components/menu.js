@@ -1,48 +1,352 @@
-static showSecretMessage() {
-    const container = document.getElementById('app-container');
+// Компонент главного меню
+class Menu {
+    static show() {
+        console.log('🎮 Menu.show() вызван');
+        
+        const userData = window.appState?.userData || { 
+            score: 0, 
+            currentEpisode: 1,
+            completedEpisodes: []
+        };
+        const container = document.getElementById('app-container');
+        
+        if (!container) {
+            console.error('❌ ERROR: app-container не найден');
+            return;
+        }
+        
+        // Получаем имя пользователя из Telegram или используем "Детектив"
+        const userName = this.getUserName();
+        
+        // Определяем, новичок или нет
+        const isNewUser = userData.currentEpisode === 1 && 
+                         userData.score === 0 && 
+                         (!userData.completedEpisodes || userData.completedEpisodes.length === 0);
+        
+        container.innerHTML = `
+            <div class="main-menu">
+                <!-- Декоративные элементы -->
+                <div class="decoration top-left"></div>
+                <div class="decoration bottom-right"></div>
+
+                <!-- Верхний заголовок -->
+                <div class="main-title">
+                    <h1>ВЕЧНЫЙ ДЕТЕКТИВ</h1>
+                    <div class="subtitle">РАССЛЕДОВАНИЕ</div>
+                </div>
+
+                <!-- Центральные кнопки -->
+                <div class="menu-buttons-container">
+                    ${isNewUser ? `
+                    <button class="menu-btn start-btn" onclick="Menu.startChapter(1)">
+                        НАЧАТЬ ДЕЛО
+                    </button>
+                    ` : `
+                    <button class="menu-btn start-btn" onclick="Menu.continueGame()">
+                        ПРОДОЛЖИТЬ ДЕЛО
+                    </button>
+                    `}
+                    
+                    <button class="menu-btn" onclick="Menu.showArchive()">
+                        АРХИВ ДЕЛ
+                    </button>
+                    
+                    <button class="menu-btn" onclick="Menu.showRating()">
+                        РЕЙТИНГ ДЕТЕКТИВОВ
+                    </button>
+                </div>
+
+                <!-- Нижняя надпись и счет -->
+                <div class="bottom-section">
+                    <div class="quote clickable-quote" onclick="Menu.showSecretMessage()">
+                        Каждый ответ - ключ к вечной загадке
+                    </div>
+                    <div class="score-display">
+                        <strong>Накоплено улик:</strong> ${userData.score}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Обновляем состояние
+        if (window.appState) {
+            window.appState.currentView = 'menu';
+            window.appState.currentEpisodeId = null;
+        }
+        
+        console.log('✅ Меню показано успешно. Новый пользователь:', isNewUser);
+    }
     
-    if (!container) return;
+    static getUserName() {
+        // Пробуем получить имя из Telegram
+        if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+            const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
+            return tgUser.first_name || tgUser.username || 'Детектив';
+        }
+        return 'Детектив';
+    }
     
-    container.innerHTML = `
-        <div class="main-menu">
-            <div class="decoration top-left"></div>
-            <div class="decoration bottom-right"></div>
-            
-            <div class="secret-message-container">
-                <div class="burnt-letter">
-                    <!-- Эффекты тления -->
-                    <div class="burning-edges">
-                        <div class="burn-edge top-edge"></div>
-                        <div class="burn-edge right-edge"></div>
-                        <div class="burn-edge bottom-edge"></div>
-                        <div class="burn-edge left-edge"></div>
+    static showSecretMessage() {
+        const container = document.getElementById('app-container');
+        
+        if (!container) return;
+        
+        container.innerHTML = `
+            <div class="main-menu">
+                <div class="decoration top-left"></div>
+                <div class="decoration bottom-right"></div>
+                
+                <div class="secret-message-container">
+                    <div class="burnt-letter">
+                        <!-- Эффекты тления -->
+                        <div class="burning-edges">
+                            <div class="burn-edge top-edge"></div>
+                            <div class="burn-edge right-edge"></div>
+                            <div class="burn-edge bottom-edge"></div>
+                            <div class="burn-edge left-edge"></div>
+                        </div>
+                        
+                        <!-- Эффекты дыма -->
+                        <div class="smoke-effect smoke-1"></div>
+                        <div class="smoke-effect smoke-2"></div>
+                        <div class="smoke-effect smoke-3"></div>
+                        
+                        <!-- Пятна от огня -->
+                        <div class="burn-marks burn-mark-1"></div>
+                        <div class="burn-marks burn-mark-2"></div>
+                        
+                        <!-- Текст письма как на скриншоте -->
+                        <div class="handwritten-text">
+                            <span class="letter-line centered">Jat is born for ye.</span>
+                            <span class="letter-line centered">The thard theen.</span>
+                            <span class="letter-line" style="margin-top: 20px;"></span>
+                            <span class="letter-line left-aligned">May, tid of buy</span>
+                            <span class="letter-line centered">snedyeyeves gu</span>
+                            <span class="letter-line right-aligned">hanyhan thereder.</span>
+                            <span class="letter-line centered" style="margin-top: 15px;">The ixufe.</span>
+                        </div>
                     </div>
                     
-                    <!-- Эффекты дыма -->
-                    <div class="smoke-effect smoke-1"></div>
-                    <div class="smoke-effect smoke-2"></div>
-                    <div class="smoke-effect smoke-3"></div>
+                    <button class="return-btn" onclick="Menu.show()">
+                        ВЕРНУТЬСЯ В МЕНЮ
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+    
+    static startChapter(chapterNumber) {
+        console.log('🎬 Запуск главы:', chapterNumber);
+        
+        if (typeof EpisodeView === 'undefined') {
+            console.error('❌ ERROR: EpisodeView не загружен');
+            this.showComponentError('EpisodeView');
+            return;
+        }
+        
+        EpisodeView.show(`${chapterNumber}_1`);
+    }
+    
+    static continueGame() {
+        console.log('▶️ Продолжение игры');
+        
+        if (typeof EpisodeView === 'undefined') {
+            console.error('❌ ERROR: EpisodeView не загружен');
+            this.showComponentError('EpisodeView');
+            return;
+        }
+        
+        const currentEpisode = window.appState?.userData?.currentEpisode || 1;
+        const currentChapter = 1;
+        console.log('🔍 Переход к эпизоду:', `${currentChapter}_${currentEpisode}`);
+        EpisodeView.show(`${currentChapter}_${currentEpisode}`);
+    }
+    
+    static showArchive() {
+        console.log('📁 Показ архива дел');
+        
+        const container = document.getElementById('app-container');
+        const userData = window.appState?.userData || { 
+            completedEpisodes: [],
+            currentEpisode: 1
+        };
+        
+        if (!container) return;
+        
+        // Определяем прогресс по главам
+        const completedCount = userData.completedEpisodes.length;
+        const totalEpisodes = Object.keys(window.episodes || {}).length;
+        const progress = totalEpisodes > 0 ? Math.round((completedCount / totalEpisodes) * 100) : 0;
+        
+        container.innerHTML = `
+            <div class="main-menu">
+                <div class="decoration top-left"></div>
+                <div class="decoration bottom-right"></div>
+                
+                <div class="main-title">
+                    <h1>АРХИВ ДЕЛ</h1>
+                    <div class="subtitle">ПРОГРЕСС И ПОВТОРЕНИЕ</div>
+                </div>
+                
+                <div style="z-index: 2; text-align: center; margin: 30px 0; max-width: 360px;">
+                    <div style="margin: 20px 0; font-size: 1.2rem; color: #ffd700;">
+                        Общий прогресс: ${progress}%
+                    </div>
                     
-                    <!-- Пятна от огня -->
-                    <div class="burn-marks burn-mark-1"></div>
-                    <div class="burn-marks burn-mark-2"></div>
+                    <div style="margin: 25px 0; padding: 15px; background: rgba(255,215,0,0.1); border-radius: 10px;">
+                        <div style="font-size: 1rem; margin-bottom: 10px;">Завершено эпизодов: ${completedCount}/${totalEpisodes}</div>
+                        <div style="font-size: 1rem;">Текущий счёт: ${userData.score} баллов</div>
+                    </div>
                     
-                    <!-- Текст письма как на скриншоте -->
-                    <div class="handwritten-text">
-                        <span class="letter-line centered">Jat is born for ye.</span>
-                        <span class="letter-line centered">The thard theen.</span>
-                        <span class="letter-line" style="margin-top: 20px;"></span>
-                        <span class="letter-line left-aligned">May, tid of buy</span>
-                        <span class="letter-line centered">snedyeyeves gu</span>
-                        <span class="letter-line right-aligned">hanyhan thereder.</span>
-                        <span class="letter-line centered" style="margin-top: 15px;">The ixufe.</span>
+                    <div style="text-align: left; margin: 25px 0;">
+                        <div style="font-size: 1.1rem; color: #ffd700; margin-bottom: 15px; text-align: center;">
+                            Глава 1: "Неожиданная встреча"
+                        </div>
+                        ${this.renderEpisodeList(1, userData)}
                     </div>
                 </div>
                 
-                <button class="return-btn" onclick="Menu.show()">
-                    ВЕРНУТЬСЯ В МЕНЮ
+                <button class="menu-btn" onclick="Menu.show()" style="max-width: 200px;">
+                    НАЗАД В МЕНЮ
                 </button>
             </div>
-        </div>
-    `;
+        `;
+        
+        if (window.appState) {
+            window.appState.currentView = 'archive';
+        }
+    }
+    
+    static renderEpisodeList(chapter, userData) {
+        const episodes = Object.keys(window.episodes || {})
+            .filter(id => id.startsWith(chapter + '_'))
+            .sort((a, b) => {
+                const aNum = parseInt(a.split('_')[1]);
+                const bNum = parseInt(b.split('_')[1]);
+                return aNum - bNum;
+            });
+        
+        let html = '';
+        episodes.forEach(episodeId => {
+            const episode = window.episodes[episodeId];
+            const isCompleted = userData.completedEpisodes.includes(episodeId);
+            const isAvailable = isCompleted || this.isEpisodeAvailable(episodeId, userData);
+            
+            html += `
+                <div class="archive-episode ${isCompleted ? 'completed' : 'locked'}" 
+                     style="margin: 12px 0; padding: 12px; border-radius: 8px; 
+                            background: ${isCompleted ? 'rgba(255,215,0,0.1)' : 'rgba(128,128,128,0.1)'}; 
+                            border: 1px solid ${isCompleted ? 'rgba(255,215,0,0.3)' : 'rgba(128,128,128,0.3)'};">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: ${isCompleted ? '#ffd700' : '#888'};">
+                                Эпизод ${episode.id}: ${episode.title}
+                            </div>
+                            <div style="font-size: 0.9rem; color: ${isCompleted ? '#b8a050' : '#666'}; margin-top: 5px;">
+                                ${isCompleted ? '✅ Завершён' : '🔒 Недоступен'}
+                            </div>
+                        </div>
+                        ${isAvailable ? `
+                        <button class="menu-btn" onclick="Menu.playEpisode('${episodeId}')" 
+                                style="padding: 8px 16px; font-size: 0.9rem; margin-left: 10px;">
+                            ${isCompleted ? '🔄 Повторить' : '▶️ Играть'}
+                        </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        
+        return html;
+    }
+    
+    static isEpisodeAvailable(episodeId, userData) {
+        const [chapter, episodeNum] = episodeId.split('_');
+        const episodeNumber = parseInt(episodeNum);
+        
+        if (episodeNumber === 1) return true;
+        
+        const prevEpisodeId = `${chapter}_${episodeNumber - 1}`;
+        return userData.completedEpisodes.includes(prevEpisodeId);
+    }
+    
+    static playEpisode(episodeId) {
+        console.log('🎮 Запуск эпизода из архива:', episodeId);
+        
+        if (typeof EpisodeView === 'undefined') {
+            console.error('❌ ERROR: EpisodeView не загружен');
+            this.showComponentError('EpisodeView');
+            return;
+        }
+        
+        EpisodeView.show(episodeId);
+    }
+    
+    static showRating() {
+        console.log('📊 Показ рейтинга');
+        
+        if (typeof Rating === 'undefined') {
+            console.error('❌ ERROR: Rating не загружен');
+            this.showFallbackRating();
+            return;
+        }
+        
+        Rating.show();
+    }
+    
+    static showComponentError(componentName) {
+        if (window.Telegram?.WebApp) {
+            window.Telegram.WebApp.showAlert(`Ошибка: ${componentName} не загружен. Перезагрузите приложение.`);
+        } else {
+            alert(`Ошибка: ${componentName} не загружен. Перезагрузите приложение.`);
+        }
+        
+        setTimeout(() => {
+            if (typeof Menu !== 'undefined') {
+                Menu.show();
+            }
+        }, 1000);
+    }
+    
+    static showFallbackRating() {
+        const container = document.getElementById('app-container');
+        const userData = window.appState?.userData || { score: 0 };
+        
+        if (!container) return;
+        
+        container.innerHTML = `
+            <div class="main-menu">
+                <div class="decoration top-left"></div>
+                <div class="decoration bottom-right"></div>
+                
+                <div class="main-title">
+                    <h1>РЕЙТИНГ ДЕТЕКТИВОВ</h1>
+                    <div class="subtitle">ТОП ИГРОКОВ</div>
+                </div>
+                
+                <div style="z-index: 2; text-align: center; margin: 40px 0;">
+                    <div style="color: #b8a050; margin-bottom: 20px;">
+                        Рейтинг обновляется в реальном времени
+                    </div>
+                    <div style="color: #b8a050; font-style: italic; padding: 20px;">
+                        Система рейтинга временно недоступна
+                    </div>
+                </div>
+                
+                <button class="menu-btn" onclick="Menu.show()" style="max-width: 200px;">
+                    НАЗАД В МЕНЮ
+                </button>
+            </div>
+        `;
+        
+        if (window.appState) {
+            window.appState.currentView = 'rating';
+        }
+    }
+}
+
+// Глобальная регистрация с защитой
+if (typeof window !== 'undefined') {
+    window.Menu = Menu;
+    console.log('✅ Menu зарегистрирован глобально');
 }
