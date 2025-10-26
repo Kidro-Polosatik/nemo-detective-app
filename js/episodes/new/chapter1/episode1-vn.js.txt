@@ -1,4 +1,5 @@
 // js/episodes/new/chapter1/episode1-vn.js
+window.episodes = window.episodes || {};
 window.episodes['1_1_vn'] = {
     id: "1",
     chapter: 1,
@@ -101,7 +102,7 @@ window.episodes['1_1_vn'] = {
             }
         }
     ],
-    hasInput: true // Будет поле для ввода ответа в конце
+    hasInput: true
 };
 
 console.log('✅ Эпизод 1 в формате ВН загружен');
