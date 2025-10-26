@@ -1,40 +1,199 @@
-/* ДОБАВЬ В КОНЕЦ vn-base.css */
+/* css/vn-base.css */
+.vn-scene {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
 
-/* Отладочные стили для спрайтов */
-.character-sprite::after {
+.vn-scene.first-person {
+    perspective: 1000px;
+}
+
+/* ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ ПЕРСОНАЖЕЙ */
+.character-sprite {
+    position: absolute;
+    bottom: 10%; /* Поднимаем от самого низа */
+    height: 60%; /* Уменьшаем высоту для мобильных */
+    width: auto;
+    transition: all 0.3s ease;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    transform-origin: bottom center;
+    z-index: 2;
+}
+
+/* Позиционирование для мобильных */
+.character-sprite.left {
+    left: 5%;
+    transform: scale(0.9);
+}
+
+.character-sprite.center {
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+}
+
+.character-sprite.right {
+    right: 5%;
+    transform: scale(0.9);
+}
+
+/* Разные размеры персонажей */
+.character-sprite[data-character="pete"] {
+    transform: scale(1.0);
+}
+
+.character-sprite[data-character="jupiter"] {
+    transform: scale(0.85);
+}
+
+.character-sprite[data-character="bob"] {
+    transform: scale(0.8);
+}
+
+.character-sprite[data-character="driver"] {
+    transform: scale(0.9);
+}
+
+/* Диалоговое окно - фиксируем внизу */
+.dialog-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.85);
+    border-top: 3px solid #ffd700;
+    padding: 20px;
+    color: white;
+    font-family: 'Georgia', serif;
+    z-index: 10;
+    min-height: 150px; /* Гарантируем место для текста */
+}
+
+.speaker-name {
+    color: #ffd700;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.dialog-text {
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 60px;
+}
+
+.continue-indicator {
+    text-align: center;
+    color: #ffd700;
+    margin-top: 15px;
+    cursor: pointer;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* Стили для кнопки назад в ВН */
+.back-btn-vn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.7);
+    color: #ffd700;
+    border: 1px solid #ffd700;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.back-btn-vn:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Отладочные стили - только если нет картинки */
+.character-sprite:not([style*="background-image"]) {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 215, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.character-sprite:not([style*="background-image"])::before {
+    content: attr(data-character);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .vn-scene {
+        height: 100vh;
+    }
+    
+    .character-sprite {
+        height: 50%; /* Еще меньше на мобильных */
+        bottom: 15%; /* Выше поднимаем */
+    }
+    
+    .character-sprite.left {
+        left: 2%;
+        transform: scale(0.8);
+    }
+    
+    .character-sprite.center {
+        left: 50%;
+        transform: translateX(-50%) scale(0.8);
+    }
+    
+    .character-sprite.right {
+        right: 2%;
+        transform: scale(0.8);
+    }
+    
+    .dialog-box {
+        padding: 15px;
+        min-height: 120px;
+    }
+    
+    .speaker-name {
+        font-size: 1em;
+    }
+    
+    .dialog-text {
+        font-size: 14px;
+        min-height: 50px;
+    }
+    
+    .back-btn-vn {
+        top: 10px;
+        left: 10px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Эффект затемнения для лучшей читаемости текста */
+.dialog-box::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    border: 2px dashed rgba(255, 215, 0, 0.5);
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
     pointer-events: none;
-    z-index: 3;
-}
-
-/* Гарантируем что спрайты видны даже без картинок */
-.character-sprite {
-    min-width: 200px;
-    min-height: 400px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-}
-
-/* Улучшаем читаемость текста */
-.dialog-text {
-    min-height: 80px;
-    font-size: 16px;
-    line-height: 1.4;
-}
-
-/* Фиксируем кнопку продолжения */
-.continue-indicator {
-    position: absolute;
-    right: 20px;
-    bottom: 15px;
-    color: #ffd700;
-    cursor: pointer;
-    animation: bounce 1s infinite;
-    z-index: 10;
+    z-index: -1;
 }
