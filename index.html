@@ -75,7 +75,17 @@
     <script src="js/phrases.js" onerror="handleScriptError('Не удалось загрузить phrases.js')"></script>
     <script src="js/answers.js" onerror="handleScriptError('Не удалось загрузить answers.js')"></script>
 
-    <!-- 2. Эпизоды -->
+    <!-- 2. Компоненты (сначала компоненты, потом эпизоды) -->
+    <script src="js/components/rating.js" onerror="handleScriptError('Не удалось загрузить rating.js')"></script>
+    <script src="js/components/episode-view.js" onerror="handleScriptError('Не удалось загрузить episode-view.js')"></script>
+    <script src="js/components/menu.js" onerror="handleScriptError('Не удалось загрузить menu.js')"></script>
+
+    <!-- 3. Данные и движок визуальной новеллы -->
+    <script src="js/data/characters.js" onerror="handleScriptError('Не удалось загрузить characters.js')"></script>
+    <script src="js/engine/vn-engine.js" onerror="handleScriptError('Не удалось загрузить vn-engine.js')"></script>
+    <script src="js/engine/test-scene.js" onerror="handleScriptError('Не удалось загрузить test-scene.js')"></script>
+
+    <!-- 4. Эпизоды (после компонентов) -->
     <script src="js/episodes/chapter1/episode1.js" onerror="handleScriptError('Не удалось загрузить episode1.js')"></script>
     <script src="js/episodes/chapter1/episode2.js" onerror="handleScriptError('Не удалось загрузить episode2.js')"></script>
     <script src="js/episodes/chapter1/episode3.js" onerror="handleScriptError('Не удалось загрузить episode3.js')"></script>
@@ -83,27 +93,15 @@
     <script src="js/episodes/chapter1/episode5.js" onerror="handleScriptError('Не удалось загрузить episode5.js')"></script>
     <script src="js/episodes/chapter1/episode6.js" onerror="handleScriptError('Не удалось загрузить episode6.js')"></script>
     <script src="js/episodes/chapter1/episode7.js" onerror="handleScriptError('Не удалось загрузить episode7.js')"></script>
-    <script src="js/engine/test-scene.js"></script>
-    <script src="js/episodes/new/chapter1/episode1-vn.js"></script>
 
-    <!-- 3. Секретное сообщение -->
+    <!-- 5. Новые ВН-эпизоды -->
+    <script src="js/episodes/new/chapter1/episode1-vn.js" onerror="handleScriptError('Не удалось загрузить episode1-vn.js')"></script>
+
+    <!-- 6. Секретное сообщение -->
     <script src="js/episodes/secret-message.js" onerror="handleScriptError('Не удалось загрузить secret-message.js')"></script>
 
-    <!-- 4. Компоненты (в порядке зависимости) -->
-    <script src="js/components/rating.js" onerror="handleScriptError('Не удалось загрузить rating.js')"></script>
-    <script src="js/components/episode-view.js" onerror="handleScriptError('Не удалось загрузить episode-view.js')"></script>
-    <script src="js/components/menu.js" onerror="handleScriptError('Не удалось загрузить menu.js')"></script>
-    <script src="js/data/characters.js"></script>
-    <script src="js/engine/vn-engine.js"></script>
-
- <!-- 5. Новые ВН-эпизоды -->
-<script src="js/episodes/new/chapter1/episode1-vn.js"></script>
-
-<!-- 6. Секретное сообщение -->
-<script src="js/episodes/secret-message.js"></script>
-
-<!-- 7. Главное приложение (ПОСЛЕ ВСЕГО!) -->
-<script src="js/app.js" onerror="handleScriptError('Не удалось загрузить app.js')"></script>
+    <!-- 7. Главное приложение (после всего!) -->
+    <script src="js/app.js" onerror="handleScriptError('Не удалось загрузить app.js')"></script>
 
     <!-- Резервная инициализация -->
     <script>
