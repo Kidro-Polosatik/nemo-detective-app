@@ -172,29 +172,47 @@ static showSecretMessage() {
     
     static startChapter(chapterNumber) {
         console.log('🎬 Запуск главы:', chapterNumber);
-        
-        if (typeof EpisodeView === 'undefined') {
-            console.error('❌ ERROR: EpisodeView не загружен');
-            this.showComponentError('EpisodeView');
-            return;
-        }
-        
+    
+    if (typeof EpisodeView === 'undefined') {
+        console.error('❌ ERROR: EpisodeView не загружен');
+        this.showComponentError('EpisodeView');
+        return;
+    }
+    
+    // Пробуем запустить ВН-версию, если есть
+    const vnEpisodeId = `${chapterNumber}_1_vn`;
+    if (window.episodes[vnEpisodeId]) {
+        console.log('🚀 Запускаем ВН-версию эпизода');
+        EpisodeView.show(vnEpisodeId);
+    } else {
+        // Иначе старую версию
         EpisodeView.show(`${chapterNumber}_1`);
+    }
+}
     }
     
     static continueGame() {
         console.log('▶️ Продолжение игры');
-        
-        if (typeof EpisodeView === 'undefined') {
-            console.error('❌ ERROR: EpisodeView не загружен');
-            this.showComponentError('EpisodeView');
-            return;
-        }
-        
-        const currentEpisode = window.appState?.userData?.currentEpisode || 1;
-        const currentChapter = 1;
+    
+    if (typeof EpisodeView === 'undefined') {
+        console.error('❌ ERROR: EpisodeView не загружен');
+        this.showComponentError('EpisodeView');
+        return;
+    }
+    
+    const currentEpisode = window.appState?.userData?.currentEpisode || 1;
+    const currentChapter = 1;
+    
+    // Пробуем ВН-версию
+    const vnEpisodeId = `${currentChapter}_${currentEpisode}_vn`;
+    if (window.episodes[vnEpisodeId]) {
+        console.log('🚀 Продолжаем ВН-версией');
+        EpisodeView.show(vnEpisodeId);
+    } else {
         console.log('🔍 Переход к эпизоду:', `${currentChapter}_${currentEpisode}`);
         EpisodeView.show(`${currentChapter}_${currentEpisode}`);
+    }
+}
     }
     
     static showArchive() {
