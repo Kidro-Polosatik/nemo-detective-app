@@ -163,7 +163,7 @@ class Menu {
                     </div>
                     
                     <button class="return-btn" onclick="Menu.show()">
-                        ВЕРНУТЬСЯ В МЕНУ
+                        ВЕРНУТЬСЯ В МЕНЮ
                     </button>
                 </div>
             </div>
