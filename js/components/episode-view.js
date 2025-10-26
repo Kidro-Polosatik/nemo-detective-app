@@ -1,39 +1,56 @@
+// Компонент отображения эпизодов
 class EpisodeView {
     static show(episodeId) {
-    console.log('=== ПОКАЗ ЭПИЗОДА ===', episodeId);
-    
-    // Проверяем что эпизоды загружены
-    if (!window.episodes) {
-        console.error('❌ ERROR: Эпизоды не загружены');
-        this.showEpisodeError('Эпизоды не загружены');
-        return;
-    }
-    
-    const episode = window.episodes[episodeId];
-    if (!episode) {
-        console.error('❌ ERROR: Эпизод не найден', episodeId);
-        console.log('Доступные эпизоды:', Object.keys(window.episodes));
-        this.showEpisodeError(`Эпизод ${episodeId} не найден`);
-        return;
-    }
-    
-    // ЕСЛИ это ВН-эпизод - используем движок ВН
-    if (episode.vnScenes && typeof VNEngine !== 'undefined') {
-        console.log('🎬 Запускаем через VN Engine');
-        VNEngine.showScene(episode.vnScenes[0]);
+        console.log('=== ПОКАЗ ЭПИЗОДА ===', episodeId);
         
-        // Обновляем состояние
+        // Проверяем что эпизоды загружены
+        if (!window.episodes) {
+            console.error('❌ ERROR: Эпизоды не загружены');
+            this.showEpisodeError('Эпизоды не загружены');
+            return;
+        }
+        
+        const episode = window.episodes[episodeId];
+        if (!episode) {
+            console.error('❌ ERROR: Эпизод не найден', episodeId);
+            console.log('Доступные эпизоды:', Object.keys(window.episodes));
+            this.showEpisodeError(`Эпизод ${episodeId} не найден`);
+            return;
+        }
+        
+        // ЕСЛИ это ВН-эпизод - используем движок ВН
+        if (episode.vnScenes && typeof VNEngine !== 'undefined') {
+            console.log('🎬 Запускаем через VN Engine');
+            
+            // Инициализируем ВН-движок с эпизодом
+            VNEngine.initEpisode(episode);
+            VNEngine.showCurrentScene();
+            
+            // Обновляем состояние
+            if (window.appState) {
+                window.appState.currentView = 'episode';
+                window.appState.currentEpisodeId = episodeId;
+                window.appState.currentVNEpisode = episode;
+            }
+            return;
+        }
+        
+        // ИНАЧЕ старый рендеринг
+        console.log('📝 Используем старый рендеринг');
+        const container = document.getElementById('app-container');
+        
+        if (!container) {
+            console.error('❌ ERROR: app-container не найден');
+            return;
+        }
+        
+        container.innerHTML = this.render(episode);
+        
+        // Обновляем состояние с защитой
         if (window.appState) {
             window.appState.currentView = 'episode';
             window.appState.currentEpisodeId = episodeId;
         }
-        return;
-    }
-    
-    // ИНАЧЕ старый рендеринг
-    console.log('📝 Используем старый рендеринг');
-    const container = document.getElementById('app-container');
-    // ... остальной старый код
         
         console.log('✅ Эпизод отображён');
     }
