@@ -251,6 +251,8 @@ class EpisodeView {
         const container = document.getElementById('app-container');
         if (!container) return;
         
+        const userData = window.appState?.userData || { score: 0 };
+        
         container.innerHTML = `
             <div class="episode-container">
                 <div class="episode-title" style="color: #ffd700; font-size: 1.6em;">
@@ -258,11 +260,17 @@ class EpisodeView {
                 </div>
                 <div class="episode-text" style="text-align: center; font-size: 1.2em;">
                     Поздравляем! Вы успешно завершили Главу 1.<br><br>
-                    Ваш текущий счёт: <strong>${window.appState?.userData?.score || 0} баллов</strong>
+                    Ваш текущий счёт: <strong>${userData.score} баллов</strong><br>
+                    Завершено эпизодов: <strong>${userData.completedEpisodes?.length || 0}</strong>
                 </div>
-                <button class="submit-btn" onclick="EpisodeView.goBack()" style="margin-top: 20px;">
-                    🏠 ВЕРНУТЬСЯ В МЕНЮ
-                </button>
+                <div style="text-align: center; margin: 20px 0;">
+                    <button class="submit-btn" onclick="EpisodeView.goBack()" style="margin: 10px;">
+                        🏠 ВЕРНУТЬСЯ В МЕНЮ
+                    </button>
+                    <button class="submit-btn" onclick="Menu.showArchive()" style="margin: 10px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444;">
+                        📁 АРХИВ ДЕЛ
+                    </button>
+                </div>
             </div>
         `;
     }
@@ -304,10 +312,12 @@ class EpisodeView {
         
         container.innerHTML = `
             <div class="error-container">
-                <h2>Ошибка</h2>
+                <h2>Ошибка загрузки эпизода</h2>
                 <p>${message}</p>
-                <button class="back-btn" onclick="EpisodeView.goBack()">← ВЕРНУТЬСЯ В МЕНЮ</button>
-                <button class="back-btn" onclick="location.reload()">🔄 Перезагрузить</button>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="back-btn" onclick="EpisodeView.goBack()">← ВЕРНУТЬСЯ В МЕНЮ</button>
+                    <button class="back-btn" onclick="location.reload()" style="background: #ff6b6b;">🔄 Перезагрузить</button>
+                </div>
             </div>
         `;
     }
