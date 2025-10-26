@@ -1,0 +1,107 @@
+// js/episodes/new/chapter1/episode1-vn.js
+window.episodes['1_1_vn'] = {
+    id: "1",
+    chapter: 1,
+    title: "Неожиданная встреча",
+    vnScenes: [
+        // СЦЕНА 1: Падение на дороге
+        {
+            background: "https://placehold.co/800x600/2c5530/ffffff?text=Загородная+дорога",
+            characters: [
+                {
+                    name: "driver",
+                    position: "center", 
+                    expression: "worried",
+                    visible: true
+                }
+            ],
+            dialog: {
+                speaker: "driver",
+                text: "Вы в порядке, мистер? – водитель участливо наклонился надо мной, помогая подняться."
+            }
+        },
+        
+        // СЦЕНА 2: Диалог с водителем
+        {
+            background: "https://placehold.co/800x600/2c5530/ffffff?text=Загородная+дорога",
+            characters: [
+                {
+                    name: "driver",
+                    position: "left",
+                    expression: "neutral", 
+                    visible: true
+                }
+            ],
+            dialog: {
+                speaker: "driver",
+                text: "Да-да, все в порядке… - И тут я понял, что не понимаю, где я нахожусь. – Где это я?"
+            }
+        },
+        
+        // СЦЕНА 3: Появление Юпитера
+        {
+            background: "https://placehold.co/800x600/2c5530/ffffff?text=Загородная+дорога", 
+            characters: [
+                {
+                    name: "jupiter",
+                    position: "center",
+                    expression: "excited",
+                    visible: true
+                }
+            ],
+            dialog: {
+                speaker: "jupiter", 
+                text: "Пасое Плэйс, Калифорния. Вы помните, как Вас зовут?"
+            }
+        },
+        
+        // СЦЕНА 4: Представление детективов
+        {
+            background: "https://placehold.co/800x600/2c5530/ffffff?text=Загородная+дорога",
+            characters: [
+                {
+                    name: "jupiter",
+                    position: "center",
+                    expression: "excited", 
+                    visible: true
+                },
+                {
+                    name: "bob",
+                    position: "left",
+                    expression: "helpful",
+                    visible: true
+                },
+                {
+                    name: "pete",
+                    position: "right",
+                    expression: "surprised",
+                    visible: true
+                }
+            ],
+            dialog: {
+                speaker: "jupiter",
+                text: "Я – Юпитер Джонс, это мои друзья Боб и Пит. Ворвингтон – наш водитель. Мы детективы."
+            }
+        },
+        
+        // СЦЕНА 5: Обнаружение своей профессии
+        {
+            background: "https://placehold.co/800x600/2c5530/ffffff?text=Загородная+дорога",
+            characters: [
+                {
+                    name: "jupiter",
+                    position: "center",
+                    expression: "thinking", 
+                    visible: true
+                }
+            ],
+            dialog: {
+                speaker: "jupiter",
+                text: "Мне кажется, я тоже детектив, - почему-то мне и правда так казалось."
+            }
+        }
+    ],
+    hasInput: true // Будет поле для ввода ответа в конце
+};
+
+console.log('✅ Эпизод 1 в формате ВН загружен');
