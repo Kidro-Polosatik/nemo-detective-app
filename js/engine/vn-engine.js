@@ -71,13 +71,16 @@ class VNEngine {
     static renderOtherCharacters(characters) {
         if (!characters || !Array.isArray(characters)) return '';
         
+        const isMobile = window.innerWidth <= 768;
+        
         return characters
             .filter(char => char.visible !== false)
             .map(char => {
                 const imagePath = `assets/chapter1/characters/${char.name}/${char.expression}.png`;
+                const mobileClass = isMobile ? 'mobile' : '';
                 
                 return `
-                    <div class="character-sprite ${char.position}" 
+                    <div class="character-sprite ${char.position} ${mobileClass}" 
                          data-character="${char.name}"
                          style="background-image: url('${imagePath}')">
                     </div>
