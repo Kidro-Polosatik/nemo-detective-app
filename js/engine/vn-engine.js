@@ -53,6 +53,10 @@ class VNEngine {
             <div class="vn-scene first-person" style="background-image: url('${scene.background}')">
                 ${this.renderOtherCharacters(scene.characters)}
                 ${this.renderDialog(scene.dialog)}
+                <!-- Кнопка назад -->
+                <button class="back-btn-vn" onclick="VNEngine.returnToMenu()">
+                    ← ВЕРНУТЬСЯ В МЕНЮ
+                </button>
             </div>
         `;
     }
@@ -288,7 +292,15 @@ class VNEngine {
     static returnToMenu() {
         console.log('🔙 Возврат в меню из ВН');
         
-        if (typeof Menu !== 'undefined') {
+        // Очищаем состояние ВН
+        this.currentEpisode = null;
+        this.currentSceneIndex = 0;
+        this.scenes = [];
+        this.currentScene = null;
+        this.isTyping = false;
+        this.currentText = '';
+        
+        if (typeof Menu !== 'undefined' && typeof Menu.show === 'function') {
             Menu.show();
         } else {
             console.error('❌ Menu не доступен для возврата');
