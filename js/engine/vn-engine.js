@@ -8,6 +8,7 @@ class VNEngine {
         this.currentEpisode = null;
         this.currentSceneIndex = 0;
         this.scenes = [];
+        this.typingInterval = null;
     }
     
     static initEpisode(episode) {
@@ -41,6 +42,12 @@ class VNEngine {
             return;
         }
         
+        console.log('🎬 Рендерим сцену:', {
+            background: sceneData.background,
+            characters: sceneData.characters,
+            dialog: sceneData.dialog
+        });
+        
         container.innerHTML = this.renderFirstPersonScene(sceneData);
         this.currentScene = sceneData;
         this.typeText(sceneData.dialog.text);
@@ -68,13 +75,11 @@ class VNEngine {
             .filter(char => char.visible !== false)
             .map(char => {
                 const imagePath = `assets/chapter1/characters/${char.name}/${char.expression}.png`;
-                const fallbackText = `[${char.name}: ${char.expression}]`;
                 
                 return `
                     <div class="character-sprite ${char.position}" 
                          data-character="${char.name}"
-                         style="background-image: url('${imagePath}')"
-                         onerror="this.style.backgroundImage='none'; this.innerHTML='${fallbackText}'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.style.color='white'; this.style.fontSize='14px';">
+                         style="background-image: url('${imagePath}')">
                     </div>
                 `;
             }).join('');
@@ -96,6 +101,11 @@ class VNEngine {
     }
     
     static typeText(text) {
+        // Останавливаем предыдущую анимацию
+        if (this.typingInterval) {
+            clearInterval(this.typingInterval);
+        }
+        
         this.isTyping = true;
         this.currentText = '';
         const element = document.getElementById('dialog-text');
@@ -104,13 +114,13 @@ class VNEngine {
         element.innerHTML = '';
         
         let i = 0;
-        const typing = setInterval(() => {
+        this.typingInterval = setInterval(() => {
             if (i < text.length) {
                 this.currentText += text.charAt(i);
                 element.innerHTML = this.currentText;
                 i++;
             } else {
-                clearInterval(typing);
+                clearInterval(this.typingInterval);
                 this.isTyping = false;
             }
         }, 30);
@@ -123,6 +133,10 @@ class VNEngine {
             if (element && this.currentScene) {
                 element.innerHTML = this.currentScene.dialog.text;
                 this.isTyping = false;
+                // Останавливаем все интервалы
+                if (this.typingInterval) {
+                    clearInterval(this.typingInterval);
+                }
             }
         } else {
             // Переход к следующей сцене
@@ -305,6 +319,9 @@ class VNEngine {
         this.currentScene = null;
         this.isTyping = false;
         this.currentText = '';
+        if (this.typingInterval) {
+            clearInterval(this.typingInterval);
+        }
         
         if (typeof Menu !== 'undefined' && typeof Menu.show === 'function') {
             Menu.show();
