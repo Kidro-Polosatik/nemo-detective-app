@@ -1,0 +1,93 @@
+/* css/vn-base.css */
+.vn-scene {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.vn-scene.first-person {
+    perspective: 1000px;
+}
+
+.character-sprite {
+    position: absolute;
+    bottom: 0;
+    height: 70%;
+    width: auto;
+    transition: all 0.3s ease;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    transform-origin: bottom center;
+}
+
+.character-sprite.left {
+    left: 5%;
+}
+
+.character-sprite.center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.character-sprite.right {
+    right: 5%;
+}
+
+/* Разные размеры персонажей */
+.character-sprite[data-character="pete"] {
+    transform: scale(1.1);
+}
+
+.character-sprite[data-character="jupiter"] {
+    transform: scale(0.9);
+}
+
+.character-sprite[data-character="bob"] {
+    transform: scale(0.8);
+}
+
+.character-sprite[data-character="driver"] {
+    transform: scale(1.0);
+}
+
+.dialog-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.85);
+    border-top: 3px solid #ffd700;
+    padding: 20px;
+    color: white;
+    font-family: 'Georgia', serif;
+}
+
+.speaker-name {
+    color: #ffd700;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.dialog-text {
+    font-size: 1.1em;
+    line-height: 1.5;
+    min-height: 60px;
+}
+
+.continue-indicator {
+    text-align: center;
+    color: #ffd700;
+    margin-top: 15px;
+    cursor: pointer;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
