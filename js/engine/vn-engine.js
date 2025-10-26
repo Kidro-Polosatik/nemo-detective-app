@@ -66,12 +66,18 @@ class VNEngine {
         
         return characters
             .filter(char => char.visible !== false)
-            .map(char => `
-                <div class="character-sprite ${char.position}" 
-                     data-character="${char.name}"
-                     style="background-image: url('assets/characters/${char.name}/${char.expression}.png')">
-                </div>
-            `).join('');
+            .map(char => {
+                const imagePath = `assets/chapter1/characters/${char.name}/${char.expression}.png`;
+                const fallbackText = `[${char.name}: ${char.expression}]`;
+                
+                return `
+                    <div class="character-sprite ${char.position}" 
+                         data-character="${char.name}"
+                         style="background-image: url('${imagePath}')"
+                         onerror="this.style.backgroundImage='none'; this.innerHTML='${fallbackText}'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.style.color='white'; this.style.fontSize='14px';">
+                    </div>
+                `;
+            }).join('');
     }
     
     static renderDialog(dialog) {
