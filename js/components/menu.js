@@ -179,15 +179,8 @@ class Menu {
             return;
         }
         
-        // Пробуем запустить ВН-версию, если есть
-        const vnEpisodeId = `${chapterNumber}_1_vn`;
-        if (window.episodes[vnEpisodeId]) {
-            console.log('🚀 Запускаем ВН-версию эпизода');
-            EpisodeView.show(vnEpisodeId);
-        } else {
-            // Иначе старую версию
-            EpisodeView.show(`${chapterNumber}_1`);
-        }
+        // Запускаем обычный текстовый эпизод
+        EpisodeView.show(`${chapterNumber}_1`);
     }
     
     static continueGame() {
@@ -202,15 +195,8 @@ class Menu {
         const currentEpisode = window.appState?.userData?.currentEpisode || 1;
         const currentChapter = 1;
         
-        // Пробуем ВН-версию
-        const vnEpisodeId = `${currentChapter}_${currentEpisode}_vn`;
-        if (window.episodes[vnEpisodeId]) {
-            console.log('🚀 Продолжаем ВН-версией');
-            EpisodeView.show(vnEpisodeId);
-        } else {
-            console.log('🔍 Переход к эпизоду:', `${currentChapter}_${currentEpisode}`);
-            EpisodeView.show(`${currentChapter}_${currentEpisode}`);
-        }
+        console.log('🔍 Переход к эпизоду:', `${currentChapter}_${currentEpisode}`);
+        EpisodeView.show(`${currentChapter}_${currentEpisode}`);
     }
     
     static testVNEngine() {
@@ -221,13 +207,14 @@ class Menu {
             return;
         }
         
-        if (!window.testScene) {
-            alert('Тестовая сцена не найдена!');
-            return;
+        // Используем тестовый ВН-эпизод
+        const testEpisodeId = 'test_vn';
+        if (window.episodes[testEpisodeId]) {
+            console.log('🚀 Запускаем тестовый ВН-эпизод');
+            EpisodeView.show(testEpisodeId);
+        } else {
+            alert('Тестовый ВН-эпизод не найден!');
         }
-        
-        // Показываем тестовую сцену
-        VNEngine.showScene(window.testScene);
     }
     
     static showArchive() {
@@ -243,7 +230,9 @@ class Menu {
         
         // Определяем прогресс по главам
         const completedCount = userData.completedEpisodes.length;
-        const totalEpisodes = Object.keys(window.episodes || {}).length;
+        const totalEpisodes = Object.keys(window.episodes || {})
+            .filter(id => !id.includes('_vn') && !id.includes('test'))
+            .length;
         const progress = totalEpisodes > 0 ? Math.round((completedCount / totalEpisodes) * 100) : 0;
         
         container.innerHTML = `
@@ -287,7 +276,7 @@ class Menu {
     
     static renderEpisodeList(chapter, userData) {
         const episodes = Object.keys(window.episodes || {})
-            .filter(id => id.startsWith(chapter + '_') && !id.endsWith('_vn'))
+            .filter(id => id.startsWith(chapter + '_') && !id.includes('_vn') && !id.includes('test'))
             .sort((a, b) => {
                 const aNum = parseInt(a.split('_')[1]);
                 const bNum = parseInt(b.split('_')[1]);
