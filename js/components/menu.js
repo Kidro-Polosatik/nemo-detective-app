@@ -47,11 +47,11 @@ class Menu {
                     </button>
                     `}
                     
-                     <!-- ДОБАВЬ ЭТУ КНОПКУ: -->
+                    <!-- Кнопка теста ВН -->
                     <button class="menu-btn" onclick="Menu.testVNEngine()">
-                    ТЕСТ ВИЗУАЛЬНОЙ НОВЕЛЛЫ
-                     </button>
-    
+                        ТЕСТ ВИЗУАЛЬНОЙ НОВЕЛЛЫ
+                    </button>
+                    
                     <button class="menu-btn" onclick="Menu.showArchive()">
                         АРХИВ ДЕЛ
                     </button>
@@ -91,128 +91,143 @@ class Menu {
         return 'Детектив';
     }
     
-static showSecretMessage() {
-    const userName = this.getUserName();
-    const container = document.getElementById('app-container');
-    
-    if (!container) return;
-    
-    // Получаем текст из отдельного файла
-    let messageText = window.secretMessageText || `Здравствуй, ${userName}!\n\nЭто секретное сообщение о проекте.`;
-    
-    // Заменяем плейсхолдер именем пользователя
-    messageText = messageText.replace('{username}', userName);
-    
-    // Разбиваем текст на строки для отображения
-    const lines = messageText.split('\n').filter(line => line.trim() !== '');
-    
-    container.innerHTML = `
-        <div class="main-menu">
-            <div class="decoration top-left"></div>
-            <div class="decoration bottom-right"></div>
-            
-            <div class="secret-message-container">
-                <div class="burnt-letter">
-                    <!-- Эффекты тления -->
-                    <div class="burning-edges">
-                        <div class="burn-edge top-edge"></div>
-                        <div class="burn-edge right-edge"></div>
-                        <div class="burn-edge bottom-edge"></div>
-                        <div class="burn-edge left-edge"></div>
-                    </div>
-                    
-                    <!-- Эффекты дыма -->
-                    <div class="smoke-effect smoke-1"></div>
-                    <div class="smoke-effect smoke-2"></div>
-                    <div class="smoke-effect smoke-3"></div>
-                    
-                    <!-- Пятна от огня -->
-                    <div class="burn-marks burn-mark-1"></div>
-                    <div class="burn-marks burn-mark-2"></div>
-                    
-                    <!-- Текст письма с оригинальным содержанием -->
-                    <div class="handwritten-text">
-                        ${lines.map((line, index) => {
-                            // Специальная обработка для строки с AllertsDonate
-                            if (line.includes('AllertsDonate')) {
-                                const textBefore = line.replace('AllertsDonate', '').trim();
-                                return `
-                                    <span class="letter-line centered">${textBefore}</span>
-                                    <div class="donate-link">
-                                        <a href="https://allertsdonate.com" target="_blank" class="donate-btn">
-                                            AllertsDonate
-                                        </a>
-                                    </div>
-                                `;
-                            }
-                            
-                            // Для пустых строк добавляем отступ
-                            if (line.trim() === '') {
-                                return `<span class="letter-line" style="margin-top: 15px;"></span>`;
-                            }
-                            
-                            // Для первой строки - центрируем и делаем заголовком
-                            if (index === 0) {
-                                return `<span class="letter-title">${line}</span>`;
-                            }
-                            
-                            // Для остальных строк - центрируем
-                            return `<span class="letter-line centered">${line}</span>`;
-                        }).join('')}
-                    </div>
-                </div>
+    static showSecretMessage() {
+        const userName = this.getUserName();
+        const container = document.getElementById('app-container');
+        
+        if (!container) return;
+        
+        // Получаем текст из отдельного файла
+        let messageText = window.secretMessageText || `Здравствуй, ${userName}!\n\nЭто секретное сообщение о проекте.`;
+        
+        // Заменяем плейсхолдер именем пользователя
+        messageText = messageText.replace('{username}', userName);
+        
+        // Разбиваем текст на строки для отображения
+        const lines = messageText.split('\n').filter(line => line.trim() !== '');
+        
+        container.innerHTML = `
+            <div class="main-menu">
+                <div class="decoration top-left"></div>
+                <div class="decoration bottom-right"></div>
                 
-                <button class="return-btn" onclick="Menu.show()">
-                    ВЕРНУТЬСЯ В МЕНЮ
-                </button>
+                <div class="secret-message-container">
+                    <div class="burnt-letter">
+                        <!-- Эффекты тления -->
+                        <div class="burning-edges">
+                            <div class="burn-edge top-edge"></div>
+                            <div class="burn-edge right-edge"></div>
+                            <div class="burn-edge bottom-edge"></div>
+                            <div class="burn-edge left-edge"></div>
+                        </div>
+                        
+                        <!-- Эффекты дыма -->
+                        <div class="smoke-effect smoke-1"></div>
+                        <div class="smoke-effect smoke-2"></div>
+                        <div class="smoke-effect smoke-3"></div>
+                        
+                        <!-- Пятна от огня -->
+                        <div class="burn-marks burn-mark-1"></div>
+                        <div class="burn-marks burn-mark-2"></div>
+                        
+                        <!-- Текст письма с оригинальным содержанием -->
+                        <div class="handwritten-text">
+                            ${lines.map((line, index) => {
+                                // Специальная обработка для строки с AllertsDonate
+                                if (line.includes('AllertsDonate')) {
+                                    const textBefore = line.replace('AllertsDonate', '').trim();
+                                    return `
+                                        <span class="letter-line centered">${textBefore}</span>
+                                        <div class="donate-link">
+                                            <a href="https://allertsdonate.com" target="_blank" class="donate-btn">
+                                                AllertsDonate
+                                            </a>
+                                        </div>
+                                    `;
+                                }
+                                
+                                // Для пустых строк добавляем отступ
+                                if (line.trim() === '') {
+                                    return `<span class="letter-line" style="margin-top: 15px;"></span>`;
+                                }
+                                
+                                // Для первой строки - центрируем и делаем заголовком
+                                if (index === 0) {
+                                    return `<span class="letter-title">${line}</span>`;
+                                }
+                                
+                                // Для остальных строк - центрируем
+                                return `<span class="letter-line centered">${line}</span>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                    
+                    <button class="return-btn" onclick="Menu.show()">
+                        ВЕРНУТЬСЯ В МЕНУ
+                    </button>
+                </div>
             </div>
-        </div>
-    `;
-}
+        `;
+    }
     
     static startChapter(chapterNumber) {
         console.log('🎬 Запуск главы:', chapterNumber);
-    
-    if (typeof EpisodeView === 'undefined') {
-        console.error('❌ ERROR: EpisodeView не загружен');
-        this.showComponentError('EpisodeView');
-        return;
-    }
-    
-    // Пробуем запустить ВН-версию, если есть
-    const vnEpisodeId = `${chapterNumber}_1_vn`;
-    if (window.episodes[vnEpisodeId]) {
-        console.log('🚀 Запускаем ВН-версию эпизода');
-        EpisodeView.show(vnEpisodeId);
-    } else {
-        // Иначе старую версию
-        EpisodeView.show(`${chapterNumber}_1`);
-    }
-}
+        
+        if (typeof EpisodeView === 'undefined') {
+            console.error('❌ ERROR: EpisodeView не загружен');
+            this.showComponentError('EpisodeView');
+            return;
+        }
+        
+        // Пробуем запустить ВН-версию, если есть
+        const vnEpisodeId = `${chapterNumber}_1_vn`;
+        if (window.episodes[vnEpisodeId]) {
+            console.log('🚀 Запускаем ВН-версию эпизода');
+            EpisodeView.show(vnEpisodeId);
+        } else {
+            // Иначе старую версию
+            EpisodeView.show(`${chapterNumber}_1`);
+        }
     }
     
     static continueGame() {
         console.log('▶️ Продолжение игры');
-    
-    if (typeof EpisodeView === 'undefined') {
-        console.error('❌ ERROR: EpisodeView не загружен');
-        this.showComponentError('EpisodeView');
-        return;
+        
+        if (typeof EpisodeView === 'undefined') {
+            console.error('❌ ERROR: EpisodeView не загружен');
+            this.showComponentError('EpisodeView');
+            return;
+        }
+        
+        const currentEpisode = window.appState?.userData?.currentEpisode || 1;
+        const currentChapter = 1;
+        
+        // Пробуем ВН-версию
+        const vnEpisodeId = `${currentChapter}_${currentEpisode}_vn`;
+        if (window.episodes[vnEpisodeId]) {
+            console.log('🚀 Продолжаем ВН-версией');
+            EpisodeView.show(vnEpisodeId);
+        } else {
+            console.log('🔍 Переход к эпизоду:', `${currentChapter}_${currentEpisode}`);
+            EpisodeView.show(`${currentChapter}_${currentEpisode}`);
+        }
     }
     
-    const currentEpisode = window.appState?.userData?.currentEpisode || 1;
-    const currentChapter = 1;
-    
-    // Пробуем ВН-версию
-    const vnEpisodeId = `${currentChapter}_${currentEpisode}_vn`;
-    if (window.episodes[vnEpisodeId]) {
-        console.log('🚀 Продолжаем ВН-версией');
-        EpisodeView.show(vnEpisodeId);
-    } else {
-        console.log('🔍 Переход к эпизоду:', `${currentChapter}_${currentEpisode}`);
-        EpisodeView.show(`${currentChapter}_${currentEpisode}`);
-    }
-}
+    static testVNEngine() {
+        console.log('🧪 Тестируем движок визуальной новеллы');
+        
+        if (typeof VNEngine === 'undefined') {
+            alert('Движок VN не загружен! Проверь консоль браузера.');
+            return;
+        }
+        
+        if (!window.testScene) {
+            alert('Тестовая сцена не найдена!');
+            return;
+        }
+        
+        // Показываем тестовую сцену
+        VNEngine.showScene(window.testScene);
     }
     
     static showArchive() {
@@ -272,7 +287,7 @@ static showSecretMessage() {
     
     static renderEpisodeList(chapter, userData) {
         const episodes = Object.keys(window.episodes || {})
-            .filter(id => id.startsWith(chapter + '_'))
+            .filter(id => id.startsWith(chapter + '_') && !id.endsWith('_vn'))
             .sort((a, b) => {
                 const aNum = parseInt(a.split('_')[1]);
                 const bNum = parseInt(b.split('_')[1]);
@@ -395,25 +410,6 @@ static showSecretMessage() {
         if (window.appState) {
             window.appState.currentView = 'rating';
         }
-    }
-    
-    // ДОБАВЬ этот метод в конец класса Menu (перед последней фигурной скобки)
-
-    static testVNEngine() {
-        console.log('🧪 Тестируем движок визуальной новеллы');
-    
-        if (typeof VNEngine === 'undefined') {
-        alert('Движок VN не загружен! Проверь консоль браузера.');
-        return;
-        }
-    
-         if (!window.testScene) {
-        alert('Тестовая сцена не найдена!');
-        return;
-         }
-    
-        // Показываем тестовую сцену
-        VNEngine.showScene(window.testScene);
     }
 }
 
