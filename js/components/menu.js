@@ -47,6 +47,11 @@ class Menu {
                     </button>
                     `}
                     
+                     <!-- ДОБАВЬ ЭТУ КНОПКУ: -->
+                    <button class="menu-btn" onclick="Menu.testVNEngine()">
+                    ТЕСТ ВИЗУАЛЬНОЙ НОВЕЛЛЫ
+                     </button>
+    
                     <button class="menu-btn" onclick="Menu.showArchive()">
                         АРХИВ ДЕЛ
                     </button>
@@ -146,9 +151,9 @@ static showSecretMessage() {
                                 return `<span class="letter-line" style="margin-top: 15px;"></span>`;
                             }
                             
-                            // Для первой строки - центрируем и делаем жирной
+                            // Для первой строки - центрируем и делаем заголовком
                             if (index === 0) {
-                                return `<span class="letter-line centered" style="font-weight: bold; font-size: 20px;">${line}</span>`;
+                                return `<span class="letter-title">${line}</span>`;
                             }
                             
                             // Для остальных строк - центрируем
@@ -372,6 +377,25 @@ static showSecretMessage() {
         if (window.appState) {
             window.appState.currentView = 'rating';
         }
+    }
+    
+    // ДОБАВЬ этот метод в конец класса Menu (перед последней фигурной скобки)
+
+    static testVNEngine() {
+        console.log('🧪 Тестируем движок визуальной новеллы');
+    
+        if (typeof VNEngine === 'undefined') {
+        alert('Движок VN не загружен! Проверь консоль браузера.');
+        return;
+        }
+    
+         if (!window.testScene) {
+        alert('Тестовая сцена не найдена!');
+        return;
+         }
+    
+        // Показываем тестовую сцену
+        VNEngine.showScene(window.testScene);
     }
 }
 
