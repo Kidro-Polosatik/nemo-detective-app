@@ -12,34 +12,39 @@
     perspective: 1000px;
 }
 
-/* ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ ПЕРСОНАЖЕЙ */
+/* ОТЛАДОЧНЫЕ СТИЛИ - гарантируют видимость */
 .character-sprite {
     position: absolute;
-    bottom: 10%; /* Поднимаем от самого низа */
-    height: 60%; /* Уменьшаем высоту для мобильных */
-    width: auto;
+    bottom: 10%;
+    height: 60%;
+    width: 200px; /* Фиксированная ширина */
     transition: all 0.3s ease;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: bottom;
     transform-origin: bottom center;
     z-index: 2;
+    
+    /* Гарантируем видимость даже без картинок */
+    background-color: rgba(255, 0, 0, 0.3) !important;
+    border: 2px solid yellow !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-/* Позиционирование для мобильных */
+/* Позиционирование */
 .character-sprite.left {
     left: 5%;
-    transform: scale(0.9);
 }
 
 .character-sprite.center {
     left: 50%;
-    transform: translateX(-50%) scale(0.9);
+    transform: translateX(-50%);
 }
 
 .character-sprite.right {
     right: 5%;
-    transform: scale(0.9);
 }
 
 /* Разные размеры персонажей */
@@ -57,6 +62,48 @@
 
 .character-sprite[data-character="driver"] {
     transform: scale(0.9);
+}
+
+.character-sprite.center[data-character="pete"] {
+    transform: translateX(-50%) scale(1.0);
+}
+
+.character-sprite.center[data-character="jupiter"] {
+    transform: translateX(-50%) scale(0.85);
+}
+
+.character-sprite.center[data-character="bob"] {
+    transform: translateX(-50%) scale(0.8);
+}
+
+.character-sprite.center[data-character="driver"] {
+    transform: translateX(-50%) scale(0.9);
+}
+
+/* Отладочная информация */
+.debug-info {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 3px;
+    z-index: 100;
+}
+
+/* Принудительно показываем спрайты */
+.character-sprite:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px dashed #00ff00;
+    pointer-events: none;
+    z-index: 5;
 }
 
 /* Диалоговое окно - фиксируем внизу */
@@ -122,21 +169,6 @@
     transform: translateY(-2px);
 }
 
-/* Отладочные стили - только если нет картинки */
-.character-sprite:not([style*="background-image"]) {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 2px dashed rgba(255, 215, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 14px;
-}
-
-.character-sprite:not([style*="background-image"])::before {
-    content: attr(data-character);
-}
-
 /* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .vn-scene {
@@ -146,21 +178,20 @@
     .character-sprite {
         height: 50%; /* Еще меньше на мобильных */
         bottom: 15%; /* Выше поднимаем */
+        width: 150px; /* Уже на мобильных */
     }
     
     .character-sprite.left {
         left: 2%;
-        transform: scale(0.8);
     }
     
     .character-sprite.center {
         left: 50%;
-        transform: translateX(-50%) scale(0.8);
+        transform: translateX(-50%);
     }
     
     .character-sprite.right {
         right: 2%;
-        transform: scale(0.8);
     }
     
     .dialog-box {
