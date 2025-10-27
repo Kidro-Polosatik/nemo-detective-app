@@ -69,23 +69,35 @@ class VNEngine {
     }
     
     static renderOtherCharacters(characters) {
-        if (!characters || !Array.isArray(characters)) return '';
+        if (!characters || !Array.isArray(characters)) {
+            console.log('❌ Нет персонажей для отображения');
+            return '';
+        }
+        
+        console.log('🎭 Рендерим персонажей:', characters);
         
         const isMobile = window.innerWidth <= 768;
         
-        return characters
+        const charactersHTML = characters
             .filter(char => char.visible !== false)
             .map(char => {
                 const imagePath = `assets/chapter1/characters/${char.name}/${char.expression}.png`;
                 const mobileClass = isMobile ? 'mobile' : '';
                 
+                console.log(`👤 Создаем спрайт: ${char.name} (${char.expression}) -> ${imagePath}`);
+                
                 return `
                     <div class="character-sprite ${char.position} ${mobileClass}" 
                          data-character="${char.name}"
+                         data-expression="${char.expression}"
                          style="background-image: url('${imagePath}')">
+                         <div class="debug-info">${char.name}:${char.expression}</div>
                     </div>
                 `;
             }).join('');
+        
+        console.log('📝 HTML персонажей:', charactersHTML);
+        return charactersHTML;
     }
     
     static renderDialog(dialog) {
