@@ -42,12 +42,6 @@ class VNEngine {
             return;
         }
         
-        console.log('🎬 Рендерим сцену:', {
-            background: sceneData.background,
-            characters: sceneData.characters,
-            dialog: sceneData.dialog
-        });
-        
         container.innerHTML = this.renderFirstPersonScene(sceneData);
         this.currentScene = sceneData;
         this.typeText(sceneData.dialog.text);
@@ -60,7 +54,6 @@ class VNEngine {
             <div class="vn-scene first-person" style="background-image: url('${scene.background}')">
                 ${this.renderOtherCharacters(scene.characters)}
                 ${this.renderDialog(scene.dialog)}
-                <!-- Кнопка назад -->
                 <button class="back-btn-vn" onclick="VNEngine.returnToMenu()">
                     ← ВЕРНУТЬСЯ В МЕНЮ
                 </button>
@@ -69,35 +62,23 @@ class VNEngine {
     }
     
     static renderOtherCharacters(characters) {
-        if (!characters || !Array.isArray(characters)) {
-            console.log('❌ Нет персонажей для отображения');
-            return '';
-        }
-        
-        console.log('🎭 Рендерим персонажей:', characters);
+        if (!characters || !Array.isArray(characters)) return '';
         
         const isMobile = window.innerWidth <= 768;
         
-        const charactersHTML = characters
+        return characters
             .filter(char => char.visible !== false)
             .map(char => {
                 const imagePath = `assets/chapter1/characters/${char.name}/${char.expression}.png`;
                 const mobileClass = isMobile ? 'mobile' : '';
                 
-                console.log(`👤 Создаем спрайт: ${char.name} (${char.expression}) -> ${imagePath}`);
-                
                 return `
                     <div class="character-sprite ${char.position} ${mobileClass}" 
                          data-character="${char.name}"
-                         data-expression="${char.expression}"
                          style="background-image: url('${imagePath}')">
-                         <div class="debug-info">${char.name}:${char.expression}</div>
                     </div>
                 `;
             }).join('');
-        
-        console.log('📝 HTML персонажей:', charactersHTML);
-        return charactersHTML;
     }
     
     static renderDialog(dialog) {
@@ -116,7 +97,6 @@ class VNEngine {
     }
     
     static typeText(text) {
-        // Останавливаем предыдущую анимацию
         if (this.typingInterval) {
             clearInterval(this.typingInterval);
         }
@@ -143,18 +123,15 @@ class VNEngine {
     
     static next() {
         if (this.isTyping) {
-            // Пропустить анимацию печати
             const element = document.getElementById('dialog-text');
             if (element && this.currentScene) {
                 element.innerHTML = this.currentScene.dialog.text;
                 this.isTyping = false;
-                // Останавливаем все интервалы
                 if (this.typingInterval) {
                     clearInterval(this.typingInterval);
                 }
             }
         } else {
-            // Переход к следующей сцене
             this.nextScene();
         }
     }
@@ -175,10 +152,8 @@ class VNEngine {
         console.log('🏁 Эпизод завершен');
         
         if (this.currentEpisode && this.currentEpisode.hasInput) {
-            // Если эпизод требует ввода ответа
             this.showAnswerInput();
         } else {
-            // Иначе возвращаем в меню
             this.returnToMenu();
         }
     }
@@ -232,14 +207,11 @@ class VNEngine {
         const answerInput = document.getElementById('answer-input');
         let answer = answerInput ? answerInput.value.trim() : '';
         
-        console.log('📝 Ответ из ВН-эпизода:', answer);
-        
         if (!answer) {
             this.showAlert('Введите ответ перед отправкой!');
             return;
         }
         
-        // Получаем правильные ответы
         const correctAnswers = window.episodeAnswers ? window.episodeAnswers[fullEpisodeId] : [];
         
         if (!correctAnswers || correctAnswers.length === 0) {
@@ -248,7 +220,6 @@ class VNEngine {
             return;
         }
         
-        // Нормализуем ответ
         const normalizedAnswer = this.normalizeAnswer(answer);
         const isCorrect = correctAnswers.some(correct => {
             const normalizedCorrect = this.normalizeAnswer(correct);
@@ -265,7 +236,6 @@ class VNEngine {
     static handleCorrectAnswer(fullEpisodeId) {
         const phrase = this.getRandomPhrase('correct');
         
-        // Начисляем баллы и обновляем прогресс
         if (window.appState && window.appState.userData) {
             window.appState.userData.score += 10;
             
@@ -298,7 +268,6 @@ class VNEngine {
         const phrase = this.getRandomPhrase('wrong');
         this.showAlert(`❌ ${phrase}`);
         
-        // Очищаем поле ввода для новой попытки
         if (answerInput) {
             answerInput.value = '';
             answerInput.focus();
@@ -327,7 +296,6 @@ class VNEngine {
     static returnToMenu() {
         console.log('🔙 Возврат в меню из ВН');
         
-        // Очищаем состояние ВН
         this.currentEpisode = null;
         this.currentSceneIndex = 0;
         this.scenes = [];
