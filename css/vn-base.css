@@ -12,28 +12,21 @@
     perspective: 1000px;
 }
 
-/* ОТЛАДОЧНЫЕ СТИЛИ - гарантируют видимость */
+/* СТИЛИ ДЛЯ ПЕРСОНАЖЕЙ */
 .character-sprite {
     position: absolute;
     bottom: 10%;
     height: 60%;
-    width: 200px; /* Фиксированная ширина */
+    width: 200px;
     transition: all 0.3s ease;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: bottom;
     transform-origin: bottom center;
     z-index: 2;
-    
-    /* Гарантируем видимость даже без картинок */
-    background-color: rgba(255, 0, 0, 0.3) !important;
-    border: 2px solid yellow !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
 }
 
-/* Позиционирование */
+/* Позиционирование для ДЕСКТОПА */
 .character-sprite.left {
     left: 5%;
 }
@@ -80,33 +73,7 @@
     transform: translateX(-50%) scale(0.9);
 }
 
-/* Отладочная информация */
-.debug-info {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 5px;
-    font-size: 12px;
-    border-radius: 3px;
-    z-index: 100;
-}
-
-/* Принудительно показываем спрайты */
-.character-sprite:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 3px dashed #00ff00;
-    pointer-events: none;
-    z-index: 5;
-}
-
-/* Диалоговое окно - фиксируем внизу */
+/* Диалоговое окно */
 .dialog-box {
     position: absolute;
     bottom: 0;
@@ -118,7 +85,7 @@
     color: white;
     font-family: 'Georgia', serif;
     z-index: 10;
-    min-height: 150px; /* Гарантируем место для текста */
+    min-height: 150px;
 }
 
 .speaker-name {
@@ -147,7 +114,7 @@
     50% { transform: translateY(-3px); }
 }
 
-/* Стили для кнопки назад в ВН */
+/* Кнопка назад */
 .back-btn-vn {
     position: absolute;
     top: 20px;
@@ -169,29 +136,64 @@
     transform: translateY(-2px);
 }
 
-/* Адаптивность для мобильных устройств */
+/* МОБИЛЬНЫЕ СТИЛИ */
 @media (max-width: 768px) {
     .vn-scene {
         height: 100vh;
     }
     
     .character-sprite {
-        height: 50%; /* Еще меньше на мобильных */
-        bottom: 15%; /* Выше поднимаем */
-        width: 150px; /* Уже на мобильных */
+        bottom: 15%;
+        height: 45%;
+        width: 120px;
     }
     
     .character-sprite.left {
         left: 2%;
+        transform: scale(0.7);
     }
     
     .character-sprite.center {
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-50%) scale(0.7);
     }
     
     .character-sprite.right {
         right: 2%;
+        transform: scale(0.7);
+    }
+    
+    /* Переопределяем размеры для мобильных */
+    .character-sprite[data-character="pete"] {
+        transform: scale(0.8);
+    }
+    
+    .character-sprite[data-character="jupiter"] {
+        transform: scale(0.65);
+    }
+    
+    .character-sprite[data-character="bob"] {
+        transform: scale(0.6);
+    }
+    
+    .character-sprite[data-character="driver"] {
+        transform: scale(0.7);
+    }
+    
+    .character-sprite.center[data-character="pete"] {
+        transform: translateX(-50%) scale(0.8);
+    }
+    
+    .character-sprite.center[data-character="jupiter"] {
+        transform: translateX(-50%) scale(0.65);
+    }
+    
+    .character-sprite.center[data-character="bob"] {
+        transform: translateX(-50%) scale(0.6);
+    }
+    
+    .character-sprite.center[data-character="driver"] {
+        transform: translateX(-50%) scale(0.7);
     }
     
     .dialog-box {
@@ -216,7 +218,7 @@
     }
 }
 
-/* Эффект затемнения для лучшей читаемости текста */
+/* Эффект затемнения */
 .dialog-box::before {
     content: '';
     position: absolute;
