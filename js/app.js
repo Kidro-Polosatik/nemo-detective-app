@@ -130,7 +130,7 @@ class NemoDetectiveApp {
             currentEpisodeId: null,
             userData: {
                 score: userData.score || 0,
-                currentEpisode: isNewUser ? 1 : Math.max(userData.currentEpisode || 1, 1),
+                currentEpisode: userData.currentEpisode || 1,
                 completedEpisodes: Array.isArray(userData.completedEpisodes) ? 
                     userData.completedEpisodes : [],
                 userId: userData.userId || this.getUserId(),
@@ -141,7 +141,8 @@ class NemoDetectiveApp {
         console.log('👤 Статус пользователя:', {
             isNewUser: isNewUser,
             currentEpisode: window.appState.userData.currentEpisode,
-            completedEpisodes: window.appState.userData.completedEpisodes.length
+            completedEpisodes: window.appState.userData.completedEpisodes.length,
+            score: window.appState.userData.score
         });
     }
 
