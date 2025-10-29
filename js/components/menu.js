@@ -6,7 +6,8 @@ class Menu {
         const userData = window.appState?.userData || { 
             score: 0, 
             currentEpisode: 1,
-            completedEpisodes: []
+            completedEpisodes: [],
+            isNewUser: true
         };
         const container = document.getElementById('app-container');
         
@@ -18,10 +19,8 @@ class Menu {
         // Получаем имя пользователя из Telegram или используем "Детектив"
         const userName = this.getUserName();
         
-        // Определяем, новичок или нет
-        const isNewUser = userData.currentEpisode === 1 && 
-                         userData.score === 0 && 
-                         (!userData.completedEpisodes || userData.completedEpisodes.length === 0);
+        // Определяем, показывать ли "Начать дело" или "Продолжить дело"
+        const showContinue = !userData.isNewUser && userData.currentEpisode > 1;
         
         container.innerHTML = `
             <div class="main-menu">
@@ -37,13 +36,16 @@ class Menu {
 
                 <!-- Центральные кнопки -->
                 <div class="menu-buttons-container">
-                    ${isNewUser ? `
-                    <button class="menu-btn start-btn" onclick="Menu.startChapter(1)">
-                        НАЧАТЬ ДЕЛО
-                    </button>
-                    ` : `
+                    ${showContinue ? `
                     <button class="menu-btn start-btn" onclick="Menu.continueGame()">
                         ПРОДОЛЖИТЬ ДЕЛО
+                    </button>
+                    <button class="menu-btn" onclick="Menu.startChapter(1)">
+                        НАЧАТЬ СНАЧАЛА
+                    </button>
+                    ` : `
+                    <button class="menu-btn start-btn" onclick="Menu.startChapter(1)">
+                        НАЧАТЬ ДЕЛО
                     </button>
                     `}
                     
@@ -64,7 +66,7 @@ class Menu {
                 <!-- Нижняя надпись и счет -->
                 <div class="bottom-section">
                     <div class="quote clickable-quote" onclick="Menu.showSecretMessage()">
-                        Каждый ответ - ключ к вечной загадке
+                        "Каждый ответ - ключ к вечной загадке"
                     </div>
                     <div class="score-display">
                         <strong>Накоплено улик:</strong> ${userData.score}
@@ -79,11 +81,11 @@ class Menu {
             window.appState.currentEpisodeId = null;
         }
         
-        console.log('✅ Меню показано успешно. Новый пользователь:', isNewUser);
+        console.log('✅ Меню показано успешно. Показывать "Продолжить":', showContinue);
     }
     
     static getUserName() {
-        // Пробуем получить имя из Telegram
+        // Получаем имя из Telegram аккаунта
         if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
             const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
             return tgUser.first_name || tgUser.username || 'Детектив';
@@ -177,6 +179,15 @@ class Menu {
             console.error('❌ ERROR: EpisodeView не загружен');
             this.showComponentError('EpisodeView');
             return;
+        }
+        
+        // Сбрасываем прогресс если начинаем заново
+        if (window.appState && window.appState.userData) {
+            window.appState.userData.currentEpisode = 1;
+            window.appState.userData.isNewUser = false;
+            if (window.app && typeof window.app.saveUserData === 'function') {
+                window.app.saveUserData();
+            }
         }
         
         // Запускаем обычный текстовый эпизод
