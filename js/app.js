@@ -122,17 +122,37 @@ class NemoDetectiveApp {
     }
 
     initWithUserData(userData) {
+        // Проверяем, является ли пользователь новичком
+        const isNewUser = this.isNewUser(userData);
+        
         window.appState = {
             currentView: 'menu',
             currentEpisodeId: null,
             userData: {
                 score: userData.score || 0,
-                currentEpisode: Math.max(userData.currentEpisode || 1, 1),
+                currentEpisode: isNewUser ? 1 : Math.max(userData.currentEpisode || 1, 1),
                 completedEpisodes: Array.isArray(userData.completedEpisodes) ? 
                     userData.completedEpisodes : [],
-                userId: userData.userId || this.getUserId()
+                userId: userData.userId || this.getUserId(),
+                isNewUser: isNewUser
             }
         };
+        
+        console.log('👤 Статус пользователя:', {
+            isNewUser: isNewUser,
+            currentEpisode: window.appState.userData.currentEpisode,
+            completedEpisodes: window.appState.userData.completedEpisodes.length
+        });
+    }
+
+    isNewUser(userData) {
+        // Пользователь считается новичком если:
+        // - Нет сохраненных данных
+        // - Или текущий эпизод = 1 И очки = 0 И нет завершенных эпизодов
+        return !userData || 
+               (userData.currentEpisode === 1 && 
+                userData.score === 0 && 
+                (!userData.completedEpisodes || userData.completedEpisodes.length === 0));
     }
 
     initWithDefaultData() {
@@ -143,7 +163,8 @@ class NemoDetectiveApp {
                 score: 0,
                 currentEpisode: 1,
                 completedEpisodes: [],
-                userId: this.getUserId()
+                userId: this.getUserId(),
+                isNewUser: true
             }
         };
     }
