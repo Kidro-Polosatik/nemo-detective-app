@@ -1,281 +1,576 @@
-/* Стиль главного меню из Leonardo AI - детективная атмосфера */
+/* css/menu.css */
+/* Стили для главного меню и навигации */
+
 .main-menu {
-    font-family: 'Georgia', 'Times New Roman', serif;
-    background: 
-        linear-gradient(135deg, #0A1931 0%, #1A2B4A 100%),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230A1931"/><path d="M0 50 L100 50 M50 0 L50 100" stroke="%23FFD700" stroke-width="0.5" opacity="0.1"/></svg>');
-    color: #D4AF37;
     min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 60px 20px 40px;
+    padding: 20px;
     position: relative;
     overflow: hidden;
 }
 
-/* Эффект винтажной бумаги с текстурой */
-.main-menu::before {
-    content: '';
+/* Декоративные элементы */
+.decoration {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-        linear-gradient(45deg, transparent 49%, rgba(212, 175, 55, 0.02) 50%, transparent 51%);
-    background-size: 100% 100%, 100% 100%, 30px 30px;
-    pointer-events: none;
-    z-index: 1;
+    width: 200px;
+    height: 200px;
+    border: 2px solid rgba(255, 215, 0, 0.1);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
 }
 
-/* Заголовок в стиле старинной вывески */
+.decoration.top-left {
+    top: -50px;
+    left: -50px;
+    animation-delay: 0s;
+}
+
+.decoration.bottom-right {
+    bottom: -50px;
+    right: -50px;
+    animation-delay: 3s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* Заголовок */
 .main-title {
     text-align: center;
-    margin-top: 50px;
+    margin: 40px 0 20px 0;
     z-index: 2;
-    position: relative;
 }
 
 .main-title h1 {
-    font-size: 3.2rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    letter-spacing: 6px;
-    margin-bottom: 15px;
-    background: linear-gradient(45deg, #D4AF37, #F7EF8A, #D4AF37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-    position: relative;
 }
 
-.main-title h1::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+.subtitle {
+    font-size: 1.1rem;
+    color: #b8a050;
+    margin-top: 8px;
+    letter-spacing: 2px;
+    font-style: italic;
 }
 
-.main-title .subtitle {
-    font-size: 1.3rem;
-    letter-spacing: 12px;
-    color: #B8A050;
-    text-transform: uppercase;
-    margin-top: 20px;
-    text-shadow: 0 0 10px rgba(184, 160, 80, 0.3);
-}
-
-/* Контейнер кнопок в стиле детективного досье */
+/* Контейнер кнопок */
 .menu-buttons-container {
-    z-index: 2;
-    margin: 50px 0;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    align-items: center;
+    gap: 15px;
+    margin: 30px 0;
+    z-index: 2;
     width: 100%;
     max-width: 320px;
 }
 
-/* Кнопки в стиле старинных документов */
+/* Основные стили кнопок */
 .menu-btn {
-    background: 
-        linear-gradient(45deg, rgba(30, 58, 95, 0.9), rgba(45, 79, 124, 0.9)),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231E3A5F"/><path d="M10 10 L90 10 M10 30 L90 30 M10 50 L90 50 M10 70 L90 70 M10 90 L90 90" stroke="%23D4AF37" stroke-width="1" opacity="0.1"/></svg>');
-    color: #D4AF37;
-    border: 2px solid #D4AF37;
-    border-radius: 8px;
-    padding: 20px 30px;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #1a1a2e;
+    border: none;
+    padding: 16px 24px;
+    margin: 0;
+    border-radius: 12px;
     font-size: 1.1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 
-        0 4px 20px rgba(212, 175, 55, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    z-index: 2;
-}
-
-.menu-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
     width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
-    transition: left 0.6s ease;
-}
-
-.menu-btn:hover::before {
-    left: 100%;
+    max-width: 280px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
 }
 
 .menu-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 
-        0 8px 30px rgba(212, 175, 55, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    background: 
-        linear-gradient(45deg, rgba(45, 79, 124, 0.9), rgba(59, 95, 138, 0.9)),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232D4F7C"/><path d="M10 10 L90 10 M10 30 L90 30 M10 50 L90 50 M10 70 L90 70 M10 90 L90 90" stroke="%23D4AF37" stroke-width="1" opacity="0.1"/></svg>');
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    background: linear-gradient(135deg, #ffed4e, #ffd700);
 }
 
 .menu-btn:active {
-    transform: translateY(-1px);
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
 }
 
-/* Особый стиль для главной кнопки */
-.menu-btn.start-btn {
-    font-size: 1.4rem;
-    padding: 25px 35px;
-    background: 
-        linear-gradient(45deg, rgba(212, 175, 55, 0.1), rgba(184, 160, 80, 0.1)),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230A1931"/><circle cx="50" cy="50" r="40" fill="none" stroke="%23D4AF37" stroke-width="0.5" opacity="0.2"/></svg>');
-    border: 3px solid #D4AF37;
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+/* Основная кнопка (Начать дело/Продолжить дело) */
+.primary-btn {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    font-size: 1.2rem;
+    padding: 18px 25px;
+}
+
+.primary-btn:hover {
+    background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+/* Вторичная кнопка (Начать сначала) */
+.secondary-btn {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.secondary-btn:hover {
+    background: linear-gradient(135deg, #45a049, #4CAF50);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
 }
 
 /* Нижняя секция */
 .bottom-section {
     text-align: center;
+    margin: 20px 0;
     z-index: 2;
-    margin-bottom: 40px;
 }
 
 .quote {
+    color: #b8a050;
     font-style: italic;
-    font-size: 1.1rem;
-    color: #8A7A40;
-    max-width: 320px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    text-shadow: 0 0 5px rgba(138, 122, 64, 0.3);
-    position: relative;
-    padding: 0 20px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: rgba(255, 215, 0, 0.05);
 }
 
-.quote::before,
-.quote::after {
-    content: '"';
-    color: #D4AF37;
-    font-size: 1.5rem;
-    position: absolute;
-    top: -5px;
-}
-
-.quote::before {
-    left: 0;
-}
-
-.quote::after {
-    right: 0;
+.quote:hover {
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
 }
 
 .score-display {
-    font-size: 1rem;
-    color: #D4AF37;
-    text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
-    background: rgba(30, 58, 95, 0.5);
-    padding: 10px 20px;
-    border-radius: 20px;
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: #ffd700;
+    font-size: 1.1rem;
+    font-weight: bold;
 }
 
-/* Декоративные элементы в стиле детективных атрибутов */
-.decoration {
+/* Секретное сообщение */
+.secret-message-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 20px;
+    z-index: 2;
+}
+
+.burnt-letter {
+    position: relative;
+    background: #f5e6c8;
+    padding: 40px 30px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid #d4b483;
+    margin-bottom: 30px;
+}
+
+/* Эффекты тления */
+.burning-edges {
     position: absolute;
-    opacity: 0.1;
-    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     pointer-events: none;
 }
 
-.decoration.top-left {
-    top: 30px;
-    left: 30px;
+.burn-edge {
+    position: absolute;
+    background: linear-gradient(45deg, transparent, #8b4513, #ff4500, transparent);
+    opacity: 0.3;
+}
+
+.top-edge {
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    animation: flicker 2s ease-in-out infinite;
+}
+
+.right-edge {
+    top: 10%;
+    right: 0;
+    bottom: 10%;
+    width: 3px;
+    animation: flicker 2s ease-in-out infinite 0.5s;
+}
+
+.bottom-edge {
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    animation: flicker 2s ease-in-out infinite 1s;
+}
+
+.left-edge {
+    top: 10%;
+    left: 0;
+    bottom: 10%;
+    width: 3px;
+    animation: flicker 2s ease-in-out infinite 1.5s;
+}
+
+/* Эффекты дыма */
+.smoke-effect {
+    position: absolute;
+    background: rgba(139, 69, 19, 0.1);
+    border-radius: 50%;
+    animation: smoke 4s ease-in-out infinite;
+}
+
+.smoke-1 {
+    width: 80px;
+    height: 80px;
+    top: -20px;
+    right: 30px;
+    animation-delay: 0s;
+}
+
+.smoke-2 {
     width: 60px;
     height: 60px;
-    border: 2px solid #D4AF37;
-    border-radius: 50%;
-}
-
-.decoration.top-left::after {
-    content: '';
-    position: absolute;
     bottom: -15px;
-    right: -15px;
-    width: 30px;
-    height: 2px;
-    background: #D4AF37;
-    transform: rotate(45deg);
+    left: 40px;
+    animation-delay: 1s;
 }
 
-.decoration.bottom-right {
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    border: 2px solid #D4AF37;
+.smoke-3 {
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: -30px;
+    animation-delay: 2s;
+}
+
+/* Пятна от огня */
+.burn-marks {
+    position: absolute;
+    background: radial-gradient(circle, #8b4513 0%, transparent 70%);
     border-radius: 50%;
-    background: 
-        radial-gradient(circle at 30% 30%, transparent 40%, #D4AF37 41%, #D4AF37 45%, transparent 46%),
-        radial-gradient(circle at 70% 70%, transparent 40%, #D4AF37 41%, #D4AF37 45%, transparent 46%);
+    opacity: 0.2;
+}
+
+.burn-mark-1 {
+    width: 40px;
+    height: 40px;
+    top: 20px;
+    right: 50px;
+}
+
+.burn-mark-2 {
+    width: 30px;
+    height: 30px;
+    bottom: 30px;
+    left: 40px;
+}
+
+/* Текст письма */
+.handwritten-text {
+    font-family: 'Cursive', 'Brush Script MT', cursive;
+    color: #5d4037;
+    line-height: 1.6;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.letter-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 25px;
+    color: #8b4513;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.letter-line {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+
+.letter-line.centered {
+    text-align: center;
+}
+
+/* Ссылка доната */
+.donate-link {
+    margin: 25px 0;
+}
+
+.donate-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.donate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
+}
+
+/* Кнопка возврата */
+.return-btn {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.return-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+    background: linear-gradient(135deg, #5a6268, #6c757d);
+}
+
+/* Анимации */
+@keyframes flicker {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes smoke {
+    0% { 
+        transform: translateY(0) scale(1);
+        opacity: 0.1;
+    }
+    50% {
+        transform: translateY(-20px) scale(1.2);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-40px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Архив эпизодов */
+.archive-episode {
+    margin: 12px 0;
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.archive-episode.completed {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.archive-episode.locked {
+    background: rgba(128, 128, 128, 0.1);
+    border: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.archive-episode:hover {
+    transform: translateX(5px);
 }
 
 /* Адаптивность */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .main-menu {
-        padding: 40px 15px 30px;
+        padding: 15px;
     }
     
     .main-title h1 {
-        font-size: 2.4rem;
-        letter-spacing: 4px;
+        font-size: 2rem;
+        letter-spacing: 2px;
     }
     
-    .main-title .subtitle {
+    .subtitle {
         font-size: 1rem;
-        letter-spacing: 8px;
     }
     
     .menu-buttons-container {
         max-width: 280px;
-        gap: 20px;
+        gap: 12px;
     }
     
     .menu-btn {
-        padding: 18px 25px;
+        padding: 14px 20px;
         font-size: 1rem;
+        max-width: 260px;
     }
     
-    .menu-btn.start-btn {
-        font-size: 1.2rem;
-        padding: 22px 30px;
+    .primary-btn {
+        font-size: 1.1rem;
+        padding: 16px 22px;
+    }
+    
+    .burnt-letter {
+        padding: 30px 20px;
+        width: 95%;
+    }
+    
+    .letter-title {
+        font-size: 1.5rem;
+    }
+    
+    .letter-line {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title h1 {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+    }
+    
+    .menu-buttons-container {
+        max-width: 250px;
+    }
+    
+    .menu-btn {
+        padding: 12px 18px;
+        font-size: 0.95rem;
+        max-width: 240px;
+    }
+    
+    .primary-btn {
+        font-size: 1rem;
+        padding: 14px 20px;
+    }
+    
+    .burnt-letter {
+        padding: 25px 15px;
+    }
+    
+    .letter-title {
+        font-size: 1.3rem;
+    }
+    
+    .letter-line {
+        font-size: 1rem;
     }
     
     .quote {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+    
+    .score-display {
         font-size: 1rem;
-        max-width: 280px;
     }
 }
 
-.continue-btn {
-    background: linear-gradient(135deg, #4CAF50, #45a049) !important;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3) !important;
+/* Эффекты появления */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
 }
 
-.continue-btn:hover {
-    background: linear-gradient(135deg, #45a049, #4CAF50) !important;
-    box-shadow:
+@keyframes fadeIn {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Улучшения для темной темы */
+@media (prefers-color-scheme: dark) {
+    .burnt-letter {
+        background: #e8d5b5;
+    }
+}
+
+/* Поддержка высокого DPI */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .main-title h1 {
+        text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    }
+}
+
+/* Анимация загрузки для кнопок */
+.menu-btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.menu-btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid #1a1a2e;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Состояния фокуса для доступности */
+.menu-btn:focus {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
+}
+
+.quote:focus {
+    outline: 2px solid #b8a050;
+    outline-offset: 2px;
+}
+
+/* Отключение анимаций для пользователей, которые их предпочитают избегать */
+@media (prefers-reduced-motion: reduce) {
+    .decoration,
+    .burn-edge,
+    .smoke-effect,
+    .menu-btn,
+    .archive-episode {
+        animation: none;
+        transition: none;
+    }
+    
+    .menu-btn:hover {
+        transform: none;
+    }
+}
