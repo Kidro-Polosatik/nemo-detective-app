@@ -44,12 +44,37 @@ class VNEngine {
         
         container.innerHTML = this.renderFirstPersonScene(sceneData);
         this.currentScene = sceneData;
-        this.typeText(sceneData.dialog.text);
+        
+        // Только для обычных сцен включаем печать текста
+        if (!sceneData.background.includes('notebook')) {
+            this.typeText(sceneData.dialog.text);
+        }
         
         console.log(`🎭 Сцена ${this.currentSceneIndex + 1}/${this.scenes.length}`);
     }
     
     static renderFirstPersonScene(scene) {
+        // Если это сцена с блокнотом (последняя сцена)
+        if (scene.background.includes('notebook')) {
+            return `
+                <div class="vn-scene notebook-scene">
+                    <div class="notebook-content">
+                        ${scene.dialog.text}
+                    </div>
+                    <div class="answer-section-final">
+                        <input type="text" class="answer-input-final" placeholder="Введите ваш ответ..." id="answer-input-final">
+                        <button class="submit-btn-final" onclick="VNEngine.submitFinalAnswer()">
+                            🔍 ОТПРАВИТЬ ОТВЕТ
+                        </button>
+                    </div>
+                    <button class="back-btn-vn" onclick="VNEngine.returnToMenu()">
+                        ← ВЕРНУТЬСЯ В МЕНЮ
+                    </button>
+                </div>
+            `;
+        }
+        
+        // Обычная сцена
         return `
             <div class="vn-scene first-person" style="background-image: url('${scene.background}')">
                 ${this.renderOtherCharacters(scene.characters)}
@@ -212,6 +237,37 @@ class VNEngine {
             return;
         }
         
+        const correctAnswers = window.episodeAnswers ? window.episodeAnswers[fullEpisodeId] : [];
+        
+        if (!correctAnswers || correctAnswers.length === 0) {
+            console.error('❌ Нет правильных ответов для эпизода:', fullEpisodeId);
+            this.showAlert('Ошибка: ответы для этого эпизода не найдены');
+            return;
+        }
+        
+        const normalizedAnswer = this.normalizeAnswer(answer);
+        const isCorrect = correctAnswers.some(correct => {
+            const normalizedCorrect = this.normalizeAnswer(correct);
+            return normalizedCorrect === normalizedAnswer;
+        });
+        
+        if (isCorrect) {
+            this.handleCorrectAnswer(fullEpisodeId);
+        } else {
+            this.handleWrongAnswer(answerInput);
+        }
+    }
+    
+    static submitFinalAnswer() {
+        const answerInput = document.getElementById('answer-input-final');
+        let answer = answerInput ? answerInput.value.trim() : '';
+        
+        if (!answer) {
+            this.showAlert('Введите ответ перед отправкой!');
+            return;
+        }
+        
+        const fullEpisodeId = `${this.currentEpisode.chapter}_${this.currentEpisode.id}`;
         const correctAnswers = window.episodeAnswers ? window.episodeAnswers[fullEpisodeId] : [];
         
         if (!correctAnswers || correctAnswers.length === 0) {
