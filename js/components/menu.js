@@ -37,14 +37,14 @@ class Menu {
                 <!-- Центральные кнопки -->
                 <div class="menu-buttons-container">
                     ${showContinue ? `
-                    <button class="menu-btn continue-btn" onclick="Menu.continueGame()">
+                    <button class="menu-btn primary-btn" onclick="Menu.continueGame()">
                         ПРОДОЛЖИТЬ ДЕЛО
                     </button>
-                    <button class="menu-btn start-btn" onclick="Menu.startChapter(1)">
+                    <button class="menu-btn secondary-btn" onclick="Menu.startChapter(1)">
                         НАЧАТЬ СНАЧАЛА
                     </button>
                     ` : `
-                    <button class="menu-btn start-btn" onclick="Menu.startChapter(1)">
+                    <button class="menu-btn primary-btn" onclick="Menu.startChapter(1)">
                         НАЧАТЬ ДЕЛО
                     </button>
                     `}
