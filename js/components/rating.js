@@ -44,7 +44,9 @@ class Rating {
         try {
             const ratingData = localStorage.getItem('nemo_global_rating');
             if (ratingData) {
-                return JSON.parse(ratingData);
+                const rating = JSON.parse(ratingData);
+                // Фильтруем пустые или некорректные записи
+                return rating.filter(user => user && user.id && user.name);
             }
         } catch (e) {
             console.error('❌ Ошибка загрузки рейтинга:', e);
@@ -66,7 +68,7 @@ class Rating {
         return {
             id: userData.userId,
             name: userName,
-            score: userData.score,
+            score: userData.score || 0,
             completedEpisodes: userData.completedEpisodes?.length || 0
         };
     }
@@ -84,6 +86,9 @@ class Rating {
             `;
         }
         
+        // Ограничиваем показ топ-20
+        const topRating = sortedRating.slice(0, 20);
+        
         return `
             <table class="rating-table">
                 <thead>
@@ -95,7 +100,7 @@ class Rating {
                     </tr>
                 </thead>
                 <tbody>
-                    ${sortedRating.map((user, index) => `
+                    ${topRating.map((user, index) => `
                         <tr class="${user.id === currentUser?.id ? 'current-user' : ''}">
                             <td class="position">${index + 1}</td>
                             <td class="name">${user.name}</td>
@@ -119,25 +124,31 @@ class Rating {
     
     static saveCurrentUserToGlobal() {
         const currentUser = this.getCurrentUser();
-        if (!currentUser) return;
+        if (!currentUser) {
+            console.log('❌ Нет данных пользователя для сохранения в рейтинг');
+            return;
+        }
         
         try {
-            const globalRating = this.getGlobalRating();
+            let globalRating = this.getGlobalRating();
             
             // Ищем существующего пользователя
             const existingUserIndex = globalRating.findIndex(user => user.id === currentUser.id);
             
             if (existingUserIndex !== -1) {
-                // Обновляем существующего
-                globalRating[existingUserIndex] = currentUser;
+                // Обновляем существующего пользователя только если новый счет больше
+                if (currentUser.score > globalRating[existingUserIndex].score) {
+                    globalRating[existingUserIndex] = currentUser;
+                    console.log('✅ Рейтинг обновлен для пользователя:', currentUser.name);
+                }
             } else {
-                // Добавляем нового
+                // Добавляем нового пользователя
                 globalRating.push(currentUser);
+                console.log('✅ Новый пользователь добавлен в рейтинг:', currentUser.name);
             }
             
             // Сохраняем обратно
             localStorage.setItem('nemo_global_rating', JSON.stringify(globalRating));
-            console.log('✅ Рейтинг обновлен для пользователя:', currentUser.name);
             
         } catch (e) {
             console.error('❌ Ошибка сохранения рейтинга:', e);
