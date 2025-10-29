@@ -12,12 +12,12 @@
     perspective: 1000px;
 }
 
-/* СТИЛИ ДЛЯ ПЕРСОНАЖЕЙ */
+/* УВЕЛИЧИВАЕМ ПЕРСОНАЖЕЙ */
 .character-sprite {
     position: absolute;
-    bottom: 10%;
-    height: 60%;
-    width: 200px;
+    bottom: 5%; /* Поднимаем выше */
+    height: 75%; /* Увеличиваем высоту */
+    width: 250px; /* Увеличиваем ширину */
     transition: all 0.3s ease;
     background-size: contain;
     background-repeat: no-repeat;
@@ -40,71 +40,71 @@
     right: 5%;
 }
 
-/* Разные размеры персонажей */
+/* УВЕЛИЧИВАЕМ РАЗМЕРЫ ПЕРСОНАЖЕЙ */
 .character-sprite[data-character="pete"] {
-    transform: scale(1.0);
+    transform: scale(1.1);
 }
 
 .character-sprite[data-character="jupiter"] {
-    transform: scale(0.85);
+    transform: scale(0.95);
 }
 
 .character-sprite[data-character="bob"] {
-    transform: scale(0.8);
-}
-
-.character-sprite[data-character="driver"] {
     transform: scale(0.9);
 }
 
+.character-sprite[data-character="driver"] {
+    transform: scale(1.0);
+}
+
 .character-sprite.center[data-character="pete"] {
-    transform: translateX(-50%) scale(1.0);
+    transform: translateX(-50%) scale(1.1);
 }
 
 .character-sprite.center[data-character="jupiter"] {
-    transform: translateX(-50%) scale(0.85);
+    transform: translateX(-50%) scale(0.95);
 }
 
 .character-sprite.center[data-character="bob"] {
-    transform: translateX(-50%) scale(0.8);
-}
-
-.character-sprite.center[data-character="driver"] {
     transform: translateX(-50%) scale(0.9);
 }
 
-/* Диалоговое окно */
+.character-sprite.center[data-character="driver"] {
+    transform: translateX(-50%) scale(1.0);
+}
+
+/* Диалоговое окно - УВЕЛИЧИВАЕМ ВЫСОТУ */
 .dialog-box {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9); /* Более темный фон */
     border-top: 3px solid #ffd700;
-    padding: 20px;
+    padding: 25px;
     color: white;
     font-family: 'Georgia', serif;
-    z-index: 10;
-    min-height: 150px;
+    z-index: 5; /* Понижаем z-index чтобы персонажи были поверх */
+    min-height: 180px; /* Увеличиваем минимальную высоту */
 }
 
 .speaker-name {
     color: #ffd700;
     font-weight: bold;
-    margin-bottom: 10px;
-    font-size: 1.1em;
+    margin-bottom: 15px;
+    font-size: 1.2em;
 }
 
 .dialog-text {
-    font-size: 16px;
-    line-height: 1.5;
-    min-height: 60px;
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 80px;
 }
 
 .continue-indicator {
     text-align: center;
     color: #ffd700;
-    margin-top: 15px;
+    margin-top: 20px;
     cursor: pointer;
     animation: bounce 1s infinite;
 }
@@ -142,72 +142,73 @@
         height: 100vh;
     }
     
+    /* УВЕЛИЧИВАЕМ ПЕРСОНАЖЕЙ НА МОБИЛЬНЫХ */
     .character-sprite {
-        bottom: 15%;
-        height: 45%;
-        width: 120px;
+        bottom: 10%;
+        height: 65%;
+        width: 180px;
     }
     
     .character-sprite.left {
         left: 2%;
-        transform: scale(0.7);
+        transform: scale(0.9);
     }
     
     .character-sprite.center {
         left: 50%;
-        transform: translateX(-50%) scale(0.7);
+        transform: translateX(-50%) scale(0.9);
     }
     
     .character-sprite.right {
         right: 2%;
-        transform: scale(0.7);
+        transform: scale(0.9);
     }
     
-    /* Переопределяем размеры для мобильных */
+    /* УВЕЛИЧИВАЕМ РАЗМЕРЫ ДЛЯ МОБИЛЬНЫХ */
     .character-sprite[data-character="pete"] {
-        transform: scale(0.8);
+        transform: scale(1.0);
     }
     
     .character-sprite[data-character="jupiter"] {
-        transform: scale(0.65);
+        transform: scale(0.85);
     }
     
     .character-sprite[data-character="bob"] {
-        transform: scale(0.6);
+        transform: scale(0.8);
     }
     
     .character-sprite[data-character="driver"] {
-        transform: scale(0.7);
+        transform: scale(0.9);
     }
     
     .character-sprite.center[data-character="pete"] {
-        transform: translateX(-50%) scale(0.8);
+        transform: translateX(-50%) scale(1.0);
     }
     
     .character-sprite.center[data-character="jupiter"] {
-        transform: translateX(-50%) scale(0.65);
+        transform: translateX(-50%) scale(0.85);
     }
     
     .character-sprite.center[data-character="bob"] {
-        transform: translateX(-50%) scale(0.6);
+        transform: translateX(-50%) scale(0.8);
     }
     
     .character-sprite.center[data-character="driver"] {
-        transform: translateX(-50%) scale(0.7);
+        transform: translateX(-50%) scale(0.9);
     }
     
     .dialog-box {
-        padding: 15px;
-        min-height: 120px;
+        padding: 20px;
+        min-height: 160px;
     }
     
     .speaker-name {
-        font-size: 1em;
+        font-size: 1.1em;
     }
     
     .dialog-text {
-        font-size: 14px;
-        min-height: 50px;
+        font-size: 16px;
+        min-height: 70px;
     }
     
     .back-btn-vn {
@@ -226,7 +227,80 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 50%, transparent 100%);
     pointer-events: none;
     z-index: -1;
+}
+
+/* СТИЛИ ДЛЯ СЦЕНЫ С БЛОКНОТОМ */
+.notebook-scene {
+    background: #f5f5dc !important; /* Цвет старой бумаги */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 20px;
+}
+
+.notebook-content {
+    flex: 1;
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    border: 2px solid #8b4513;
+    border-radius: 8px;
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    font-family: 'Georgia', serif;
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333;
+    white-space: pre-line;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.answer-section-final {
+    width: 100%;
+    max-width: 600px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    border-top: 3px solid #ffd700;
+}
+
+.answer-input-final {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #444;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-family: 'Georgia', serif;
+}
+
+.answer-input-final:focus {
+    outline: none;
+    border-color: #ffd700;
+}
+
+.submit-btn-final {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    border: none;
+    border-radius: 8px;
+    color: #1a1a2e;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-family: 'Georgia', serif;
+}
+
+.submit-btn-final:hover {
+    transform: translateY(-2px);
 }
