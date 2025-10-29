@@ -270,3 +270,12 @@
         max-width: 280px;
     }
 }
+
+.continue-btn {
+    background: linear-gradient(135deg, #4CAF50, #45a049) !important;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3) !important;
+}
+
+.continue-btn:hover {
+    background: linear-gradient(135deg, #45a049, #4CAF50) !important;
+    box-shadow:
