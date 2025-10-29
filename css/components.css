@@ -1,7 +1,8 @@
 /* css/components.css */
 /* Общие компоненты приложения */
 
-/* Кнопки меню */
+/* УДАЛИТЬ эти стили - они уже в menu.css */
+/*
 .menu-btn {
     background: linear-gradient(135deg, #ffd700, #ffed4e);
     color: #1a1a2e;
@@ -41,6 +42,18 @@
 .start-btn:hover {
     background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
     box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+*/
+
+/* Контейнер для выравнивания кнопок по центру */
+.menu-buttons-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 30px 0;
+    z-index: 2;
+    width: 100%;
 }
 
 /* Контейнер эпизода */
@@ -303,12 +316,6 @@
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    .menu-btn {
-        padding: 12px 20px;
-        font-size: 1rem;
-        max-width: 250px;
-    }
-    
     .episode-container {
         margin: 10px;
         padding: 20px;
@@ -337,12 +344,6 @@
 }
 
 @media (max-width: 480px) {
-    .menu-btn {
-        padding: 10px 15px;
-        font-size: 0.9rem;
-        max-width: 220px;
-    }
-    
     .episode-container {
         margin: 5px;
         padding: 15px;
