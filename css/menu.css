@@ -77,59 +77,62 @@
     max-width: 320px;
 }
 
-/* Основные стили кнопок */
+/* ОРИГИНАЛЬНЫЙ СТИЛЬ КНОПОК */
 .menu-btn {
-    background: linear-gradient(135deg, #ffd700, #ffed4e);
-    color: #1a1a2e;
-    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffd700;
+    border: 2px solid #ffd700;
     padding: 16px 24px;
     margin: 0;
-    border-radius: 12px;
+    border-radius: 8px;
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
     width: 100%;
     max-width: 280px;
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: center;
+    backdrop-filter: blur(10px);
 }
 
 .menu-btn:hover {
+    background: rgba(255, 215, 0, 0.1);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-    background: linear-gradient(135deg, #ffed4e, #ffd700);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
 }
 
 .menu-btn:active {
     transform: translateY(0);
-    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
 }
 
-/* Основная кнопка (Начать дело/Продолжить дело) */
+/* Основная кнопка START CASE */
 .primary-btn {
-    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    background: rgba(255, 215, 0, 0.15);
+    border: 2px solid #ffd700;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
     font-size: 1.2rem;
     padding: 18px 25px;
 }
 
 .primary-btn:hover {
-    background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    background: rgba(255, 215, 0, 0.2);
+    box-shadow: 0 6px 25px rgba(255, 215, 0, 0.4);
 }
 
-/* Вторичная кнопка (Начать сначала) */
+/* Вторичная кнопка */
 .secondary-btn {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #ffd700;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
 }
 
 .secondary-btn:hover {
-    background: linear-gradient(135deg, #45a049, #4CAF50);
-    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    background: rgba(255, 215, 0, 0.1);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
 }
 
 /* Нижняя секция */
@@ -342,24 +345,24 @@
 
 /* Кнопка возврата */
 .return-btn {
-    background: linear-gradient(135deg, #6c757d, #5a6268);
-    color: white;
-    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffd700;
+    border: 2px solid #ffd700;
     padding: 12px 24px;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .return-btn:hover {
+    background: rgba(255, 215, 0, 0.1);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
-    background: linear-gradient(135deg, #5a6268, #6c757d);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
 }
 
 /* Анимации */
@@ -538,7 +541,7 @@
     left: 50%;
     margin: -10px 0 0 -10px;
     border: 2px solid transparent;
-    border-top: 2px solid #1a1a2e;
+    border-top: 2px solid #ffd700;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
