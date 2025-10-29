@@ -1,43 +1,29 @@
-/* Общие компоненты и кнопки */
+/* css/components.css */
+/* Общие компоненты приложения */
 
 /* Кнопки меню */
 .menu-btn {
-    background: linear-gradient(45deg, #1E3A5F, #2D4F7C);
-    color: #FFD700;
-    border: 2px solid #FFD700;
-    padding: 18px 25px;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #1a1a2e;
+    border: none;
+    padding: 15px 25px;
+    margin: 10px 0;
+    border-radius: 12px;
     font-size: 1.1rem;
     font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-    font-family: 'Georgia', serif;
-}
-
-.menu-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
-    transition: left 0.5s ease;
-}
-
-.menu-btn:hover::before {
-    left: 100%;
+    max-width: 280px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .menu-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-    background: linear-gradient(45deg, #2D4F7C, #3B5F8A);
+    background: linear-gradient(135deg, #ffed4e, #ffd700);
 }
 
 .menu-btn:active {
@@ -45,133 +31,449 @@
     box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
 }
 
-/* Особые стили для кнопки начала */
 .start-btn {
-    font-size: 1.3rem;
-    padding: 20px 30px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    font-size: 1.2rem;
+    padding: 18px 25px;
 }
 
-/* Кнопка отправки в эпизодах */
-.submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(45deg, #ffd700, #ffed4e);
-    border: none;
-    border-radius: 8px;
-    color: #1a1a2e;
+.start-btn:hover {
+    background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+/* Контейнер эпизода */
+.episode-container {
+    background: rgba(26, 26, 46, 0.95);
+    border: 2px solid #ffd700;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.episode-title {
+    font-size: 1.4rem;
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 20px;
     font-weight: bold;
-    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    padding-bottom: 10px;
+}
+
+.episode-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+    margin-bottom: 25px;
+    text-align: justify;
+}
+
+/* Секция ответов */
+.answer-section {
+    margin: 25px 0;
+    text-align: center;
+}
+
+.answer-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 15px;
+    border: 2px solid #ffd700;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.answer-input:focus {
+    outline: none;
+    border-color: #ffed4e;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.answer-input::placeholder {
+    color: #b8b8b8;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #1a1a2e;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s;
-    font-family: 'Georgia', serif;
-    margin: 10px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .submit-btn:hover {
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Кнопка назад */
+.back-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffd700;
+    border: 1px solid #ffd700;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+.back-btn:hover {
+    background: rgba(255, 215, 0, 0.1);
+    transform: translateY(-1px);
 }
 
 /* Рейтинг */
 .rating-container {
+    max-width: 500px;
+    margin: 0 auto;
+    z-index: 2;
+}
+
+.rating-table {
+    width: 100%;
+    border-collapse: collapse;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    padding: 25px;
-    margin: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.rating-title {
-    color: #ffd700;
+.rating-table th {
+    background: rgba(255, 215, 0, 0.2);
+    padding: 12px 8px;
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.4em;
+    font-weight: bold;
+    color: #ffd700;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
 }
 
-.rating-list {
-    margin-left: 20px;
-    font-size: 16px;
-    line-height: 2;
+.rating-table td {
+    padding: 10px 8px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
 }
 
-.rating-item {
-    display: flex;
-    justify-content: space-between;
+.rating-table tr:last-child td {
+    border-bottom: none;
+}
+
+.rating-table tr.current-user {
+    background: rgba(255, 215, 0, 0.15);
+    font-weight: bold;
+}
+
+.rating-table tr.current-user td {
+    color: #ffd700;
+}
+
+.rating-table .position {
+    font-weight: bold;
+    color: #ffd700;
+    width: 60px;
+}
+
+.rating-table .name {
+    text-align: left;
+    padding-left: 15px;
+    font-weight: 500;
+}
+
+.rating-table .score {
+    font-weight: bold;
+    color: #ffd700;
+    width: 80px;
+}
+
+.rating-table .episodes {
+    width: 80px;
+    color: #b8a050;
+}
+
+.rating-stats {
+    text-align: center;
+    margin: 20px 0;
+    color: #b8a050;
+    font-size: 1rem;
+}
+
+.rating-stats div {
+    margin: 8px 0;
+}
+
+.no-rating {
+    text-align: center;
+    padding: 40px 20px;
+    color: #b8a050;
+    font-size: 1.1rem;
+}
+
+.no-rating p {
     margin: 10px 0;
-    padding: 8px 12px;
-    border-radius: 6px;
 }
 
-.rating-item.current-user {
+/* Архив эпизодов */
+.archive-episode {
+    margin: 12px 0;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.archive-episode.completed {
     background: rgba(255, 215, 0, 0.1);
     border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
-/* Стили для архива эпизодов */
-.archive-episode {
-    transition: all 0.3s ease;
-}
-
-.archive-episode.completed:hover {
-    background: rgba(255, 215, 0, 0.15) !important;
-    border-color: rgba(255, 215, 0, 0.5) !important;
-}
-
 .archive-episode.locked {
-    opacity: 0.7;
+    background: rgba(128, 128, 128, 0.1);
+    border: 1px solid rgba(128, 128, 128, 0.3);
 }
 
-.back-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid #444;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
-    font-family: 'Georgia', serif;
+.archive-episode:hover {
+    transform: translateX(5px);
 }
 
-/* Стили для кликабельной цитаты */
-.clickable-quote {
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.clickable-quote:hover {
+/* Индикатор загрузки */
+.loading {
+    text-align: center;
+    font-size: 1.2rem;
     color: #ffd700;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    padding: 50px 20px;
+    animation: pulse 1.5s ease-in-out infinite;
 }
 
-.clickable-quote::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: #ffd700;
-    transition: width 0.3s ease;
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
 }
 
-.clickable-quote:hover::after {
-    width: 100%;
+/* Контейнер ошибок */
+.error-container {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(26, 26, 46, 0.95);
+    border: 2px solid #ff6b6b;
+    border-radius: 15px;
+    margin: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-/* Адаптивность компонентов */
-@media (max-width: 480px) {
+.error-container h2 {
+    color: #ff6b6b;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.error-container p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #e0e0e0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
     .menu-btn {
-        padding: 16px 20px;
+        padding: 12px 20px;
+        font-size: 1rem;
+        max-width: 250px;
+    }
+    
+    .episode-container {
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    .episode-title {
+        font-size: 1.2rem;
+    }
+    
+    .episode-text {
         font-size: 1rem;
     }
     
-    .start-btn {
-        font-size: 1.1rem;
-        padding: 18px 25px;
+    .rating-table {
+        font-size: 0.9rem;
     }
     
-    .rating-container {
-        padding: 20px 15px;
-        margin: 10px;
+    .rating-table th,
+    .rating-table td {
+        padding: 8px 5px;
     }
+    
+    .answer-input {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        max-width: 220px;
+    }
+    
+    .episode-container {
+        margin: 5px;
+        padding: 15px;
+    }
+    
+    .rating-table {
+        font-size: 0.8rem;
+    }
+    
+    .rating-table th,
+    .rating-table td {
+        padding: 6px 3px;
+    }
+}
+
+/* Анимации */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-in {
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+/* Специальные эффекты */
+.glow {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+}
+
+/* Улучшенная типографика */
+.text-gold {
+    color: #ffd700;
+}
+
+.text-silver {
+    color: #b8a050;
+}
+
+.text-bronze {
+    color: #cd7f32;
+}
+
+.text-muted {
+    color: #888;
+}
+
+/* Progress bars */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700, #ffed4e);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.9rem;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Notification badges */
+.badge {
+    display: inline-block;
+    padding: 2px 6px;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-left: 5px;
+    vertical-align: super;
+}
+
+/* Selection styles */
+::selection {
+    background: rgba(255, 215, 0, 0.3);
+    color: white;
+}
+
+::-moz-selection {
+    background: rgba(255, 215, 0, 0.3);
+    color: white;
 }
