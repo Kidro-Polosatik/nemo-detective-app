@@ -1,4 +1,4 @@
-// Компонент главного меню
+// js/components/menu.js
 class Menu {
     static show() {
         console.log('🎮 Menu.show() вызван');
@@ -20,7 +20,7 @@ class Menu {
         const userName = this.getUserName();
         
         // Определяем, показывать ли "Начать дело" или "Продолжить дело"
-        const showContinue = !userData.isNewUser && userData.currentEpisode > 1;
+        const showContinue = !userData.isNewUser;
         
         container.innerHTML = `
             <div class="main-menu">
@@ -37,10 +37,10 @@ class Menu {
                 <!-- Центральные кнопки -->
                 <div class="menu-buttons-container">
                     ${showContinue ? `
-                    <button class="menu-btn start-btn" onclick="Menu.continueGame()">
+                    <button class="menu-btn continue-btn" onclick="Menu.continueGame()">
                         ПРОДОЛЖИТЬ ДЕЛО
                     </button>
-                    <button class="menu-btn" onclick="Menu.startChapter(1)">
+                    <button class="menu-btn start-btn" onclick="Menu.startChapter(1)">
                         НАЧАТЬ СНАЧАЛА
                     </button>
                     ` : `
