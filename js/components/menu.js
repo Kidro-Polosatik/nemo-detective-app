@@ -190,8 +190,15 @@ class Menu {
             }
         }
         
-        // Запускаем обычный текстовый эпизод
-        EpisodeView.show(`${chapterNumber}_1`);
+        // Запускаем ВН-версию эпизода 1
+        const firstEpisodeId = `${chapterNumber}_1`;
+        if (window.episodes[firstEpisodeId]?.vnScenes) {
+            console.log('🚀 Запускаем ВН-версию эпизода 1');
+            EpisodeView.show(firstEpisodeId);
+        } else {
+            // Fallback на обычную версию
+            EpisodeView.show(firstEpisodeId);
+        }
     }
     
     static continueGame() {
@@ -205,9 +212,18 @@ class Menu {
         
         const currentEpisode = window.appState?.userData?.currentEpisode || 1;
         const currentChapter = 1;
+        const episodeId = `${currentChapter}_${currentEpisode}`;
         
-        console.log('🔍 Переход к эпизоду:', `${currentChapter}_${currentEpisode}`);
-        EpisodeView.show(`${currentChapter}_${currentEpisode}`);
+        console.log('🔍 Переход к эпизоду:', episodeId);
+        
+        // Проверяем, есть ли ВН-версия
+        if (window.episodes[episodeId]?.vnScenes) {
+            console.log('🎬 Запускаем ВН-версию');
+            EpisodeView.show(episodeId);
+        } else {
+            console.log('📝 Запускаем текстовую версию');
+            EpisodeView.show(episodeId);
+        }
     }
     
     static testVNEngine() {
