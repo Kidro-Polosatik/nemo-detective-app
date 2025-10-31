@@ -1,4 +1,4 @@
-// Движок визуальной новеллы
+// js/engine/vn-engine.js - Движок визуальной новеллы с двумя кнопками
 class VNEngine {
     static init() {
         console.log('🎬 VN Engine инициализирован');
@@ -67,18 +67,35 @@ class VNEngine {
                             🔍 ОТПРАВИТЬ ОТВЕТ
                         </button>
                     </div>
-                    <button class="back-btn-vn" onclick="VNEngine.returnToMenu()">
-                        ← ВЕРНУТЬСЯ В МЕНЮ
-                    </button>
+                    <div class="navigation-buttons">
+                        <button class="nav-btn back" onclick="VNEngine.prevScene()" ${this.currentSceneIndex === 0 ? 'disabled' : ''}>
+                            ← НАЗАД
+                        </button>
+                        <button class="nav-btn next" onclick="VNEngine.returnToMenu()">
+                            🏠 В МЕНЮ
+                        </button>
+                    </div>
                 </div>
             `;
         }
         
-        // Обычная сцена
+        // Обычная сцена с двумя кнопками навигации
+        const isFirstScene = this.currentSceneIndex === 0;
+        const isLastScene = this.currentSceneIndex === this.scenes.length - 1;
+        const nextButtonText = isLastScene ? 'ЗАВЕРШИТЬ' : 'ДАЛЕЕ →';
+        
         return `
             <div class="vn-scene first-person" style="background-image: url('${scene.background}')">
                 ${this.renderOtherCharacters(scene.characters)}
                 ${this.renderDialog(scene.dialog)}
+                <div class="navigation-buttons">
+                    <button class="nav-btn back" onclick="VNEngine.prevScene()" ${isFirstScene ? 'disabled' : ''}>
+                        ← НАЗАД
+                    </button>
+                    <button class="nav-btn next" onclick="VNEngine.nextScene()">
+                        ${nextButtonText}
+                    </button>
+                </div>
                 <button class="back-btn-vn" onclick="VNEngine.returnToMenu()">
                     ← ВЕРНУТЬСЯ В МЕНЮ
                 </button>
@@ -114,9 +131,6 @@ class VNEngine {
             <div class="dialog-box">
                 <div class="speaker-name">${speakerName}</div>
                 <div class="dialog-text" id="dialog-text"></div>
-                <div class="continue-indicator" onclick="VNEngine.next()">
-                    ▼ Нажмите чтобы продолжить
-                </div>
             </div>
         `;
     }
@@ -146,7 +160,7 @@ class VNEngine {
         }, 30);
     }
     
-    static next() {
+    static nextScene() {
         if (this.isTyping) {
             const element = document.getElementById('dialog-text');
             if (element && this.currentScene) {
@@ -157,19 +171,26 @@ class VNEngine {
                 }
             }
         } else {
-            this.nextScene();
+            this.currentSceneIndex++;
+            this.showCurrentScene();
         }
     }
     
-    static nextScene() {
-        this.currentSceneIndex++;
-        this.showCurrentScene();
-    }
-    
     static prevScene() {
-        if (this.currentSceneIndex > 0) {
-            this.currentSceneIndex--;
-            this.showCurrentScene();
+        if (this.isTyping) {
+            const element = document.getElementById('dialog-text');
+            if (element && this.currentScene) {
+                element.innerHTML = this.currentScene.dialog.text;
+                this.isTyping = false;
+                if (this.typingInterval) {
+                    clearInterval(this.typingInterval);
+                }
+            }
+        } else {
+            if (this.currentSceneIndex > 0) {
+                this.currentSceneIndex--;
+                this.showCurrentScene();
+            }
         }
     }
     
@@ -199,9 +220,14 @@ class VNEngine {
                     <div class="episode-text">
                         Эпизод уже завершён! Ваш ответ был верным.
                     </div>
-                    <button class="submit-btn" onclick="VNEngine.returnToMenu()">
-                        🏠 ВЕРНУТЬСЯ В МЕНЮ
-                    </button>
+                    <div class="navigation-buttons">
+                        <button class="nav-btn back" onclick="VNEngine.returnToMenu()">
+                            ← В МЕНЮ
+                        </button>
+                        <button class="nav-btn next" onclick="VNEngine.nextEpisode()">
+                            СЛЕДУЮЩИЙ →
+                        </button>
+                    </div>
                 </div>
             `;
         } else {
@@ -221,12 +247,71 @@ class VNEngine {
                         </button>
                     </div>
                     
-                    <button class="back-btn" onclick="VNEngine.returnToMenu()">← ВЕРНУТЬСЯ В МЕНЮ</button>
+                    <div class="navigation-buttons">
+                        <button class="nav-btn back" onclick="VNEngine.returnToMenu()">
+                            ← В МЕНЮ
+                        </button>
+                        <button class="nav-btn next" onclick="VNEngine.nextEpisode()">
+                            ПРОПУСТИТЬ →
+                        </button>
+                    </div>
                 </div>
             `;
         }
     }
     
+    static nextEpisode() {
+        const currentEpisode = window.episodes[`${this.currentEpisode.chapter}_${this.currentEpisode.id}`];
+        if (!currentEpisode) {
+            console.error('❌ Текущий эпизод не найден');
+            this.returnToMenu();
+            return;
+        }
+        
+        const nextEpisodeId = `${this.currentEpisode.chapter}_${parseInt(this.currentEpisode.id) + 1}`;
+        
+        if (window.episodes[nextEpisodeId]) {
+            if (typeof EpisodeView !== 'undefined') {
+                EpisodeView.show(nextEpisodeId);
+            } else {
+                console.error('❌ EpisodeView не загружен');
+                this.returnToMenu();
+            }
+        } else {
+            console.log('🎉 Глава завершена!');
+            this.showChapterComplete();
+        }
+    }
+    
+    static showChapterComplete() {
+        const container = document.getElementById('app-container');
+        if (!container) return;
+        
+        const userData = window.appState?.userData || { score: 0 };
+        
+        container.innerHTML = `
+            <div class="episode-container">
+                <div class="episode-title" style="color: #ffd700; font-size: 1.6em;">
+                    🎉 ГЛАВА ЗАВЕРШЕНА!
+                </div>
+                <div class="episode-text" style="text-align: center; font-size: 1.2em;">
+                    Поздравляем! Вы успешно завершили Главу 1.<br><br>
+                    Ваш текущий счёт: <strong>${userData.score} баллов</strong><br>
+                    Завершено эпизодов: <strong>${userData.completedEpisodes?.length || 0}</strong>
+                </div>
+                <div class="navigation-buttons">
+                    <button class="nav-btn back" onclick="VNEngine.returnToMenu()">
+                        ← В МЕНЮ
+                    </button>
+                    <button class="nav-btn next" onclick="Menu.showArchive()">
+                        АРХИВ →
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+    
+    // ... остальные методы остаются без изменений (submitAnswer, handleCorrectAnswer, и т.д.)
     static submitAnswer() {
         const fullEpisodeId = `${this.currentEpisode.chapter}_${this.currentEpisode.id}`;
         const answerInput = document.getElementById('answer-input');
@@ -311,12 +396,12 @@ class VNEngine {
             this.showAlert(`✅ ${phrase}! +10 баллов!`);
             
             setTimeout(() => {
-                this.returnToMenu();
+                this.nextEpisode();
             }, 1500);
             
         } else {
             this.showAlert(`✅ ${phrase}!`);
-            this.returnToMenu();
+            this.nextEpisode();
         }
     }
     
