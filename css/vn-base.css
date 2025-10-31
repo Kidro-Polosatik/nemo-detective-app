@@ -101,20 +101,66 @@
     min-height: 80px;
 }
 
-.continue-indicator {
-    text-align: center;
-    color: #ffd700;
+/* НОВЫЕ КНОПКИ НАВИГАЦИИ */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 20px;
+    gap: 15px;
+}
+
+.nav-btn {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    border: 2px solid #ffd700;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
-    animation: bounce 1s infinite;
+    transition: all 0.3s ease;
+    font-family: 'Georgia', serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 120px;
+    text-align: center;
 }
 
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
+.nav-btn:hover {
+    background: rgba(255, 215, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
 }
 
-/* Кнопка назад */
+.nav-btn:active {
+    transform: translateY(0);
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.nav-btn:disabled:hover {
+    background: rgba(255, 215, 0, 0.2);
+    box-shadow: none;
+}
+
+.nav-btn.back {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn.back:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-btn.next {
+    background: rgba(255, 215, 0, 0.3);
+}
+
+/* Кнопка назад в меню */
 .back-btn-vn {
     position: absolute;
     top: 20px;
@@ -209,6 +255,12 @@
     .dialog-text {
         font-size: 16px;
         min-height: 70px;
+    }
+    
+    .nav-btn {
+        padding: 10px 15px;
+        font-size: 12px;
+        min-width: 100px;
     }
     
     .back-btn-vn {
