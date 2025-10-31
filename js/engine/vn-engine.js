@@ -71,7 +71,7 @@ class VNEngine {
                         <button class="nav-btn back" onclick="VNEngine.prevScene()" ${this.currentSceneIndex === 0 ? 'disabled' : ''}>
                             ← НАЗАД
                         </button>
-                        <button class="nav-btn menu" onclick="VNEngine.returnToMenu()">
+                        <button class="nav-btn menu" onclick="Menu.show()">
                             🏠 МЕНЮ
                         </button>
                         <button class="nav-btn next" onclick="VNEngine.nextScene()">
@@ -96,7 +96,7 @@ class VNEngine {
                     <button class="nav-btn back" onclick="VNEngine.prevScene()" ${isFirstScene ? 'disabled' : ''}>
                         ← НАЗАД
                     </button>
-                    <button class="nav-btn menu" onclick="VNEngine.returnToMenu()">
+                    <button class="nav-btn menu" onclick="Menu.show()">
                         🏠 МЕНЮ
                     </button>
                     <button class="nav-btn next" onclick="${nextButtonAction}">
@@ -208,25 +208,25 @@ class VNEngine {
         }
     }
     
-static showAnswerInput() {
-         const container = document.getElementById('app-container');
-       if (!container) return;
+    static showAnswerInput() {
+        const container = document.getElementById('app-container');
+        if (!container) return;
         
         const fullEpisodeId = `${this.currentEpisode.chapter}_${this.currentEpisode.id}`;
         const isCompleted = window.appState?.userData?.completedEpisodes?.includes(fullEpisodeId);
         
-         if (isCompleted) {
+        if (isCompleted) {
             container.innerHTML = `
                 <div class="episode-container">
                     <div class="episode-title">
-                      Глава ${this.currentEpisode.chapter}, Эпизод ${this.currentEpisode.id}: ${this.currentEpisode.title} ✅
+                        Глава ${this.currentEpisode.chapter}, Эпизод ${this.currentEpisode.id}: ${this.currentEpisode.title} ✅
                     </div>
                     <div class="episode-text">
                         Эпизод уже завершён! Ваш ответ был верным.
                     </div>
-                  <div style="text-align: center; margin-top: 30px;">
-                       <button class="submit-btn" onclick="VNEngine.returnToMenu()" style="max-width: 250px;">
-                             ← ВЕРНУТЬСЯ В МЕНЮ
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="submit-btn" onclick="Menu.show()" style="max-width: 250px;">
+                            ← ВЕРНУТЬСЯ В МЕНЮ
                         </button>
                     </div>
                 </div>
@@ -248,41 +248,81 @@ static showAnswerInput() {
                         </button>
                     </div>
                     
-                   <div class="navigation-buttons">
-                        <button class="nav-btn back" onclick="VNEngine.returnToMenu()">
-                           ← МЕНЮ
+                    <div class="navigation-buttons">
+                        <button class="nav-btn back" onclick="Menu.show()">
+                            ← МЕНЮ
                         </button>
-			 <button class="nav-btn menu" onclick="VNEngine.nextEpisode()">
-			    ПРОПУСТИТЬ
+                        <button class="nav-btn menu" onclick="VNEngine.nextEpisode()">
+                            ПРОПУСТИТЬ
                         </button>
-			 <button class="nav-btn next" onclick="VNEngine.submitAnswer()">
-			     ОТВЕТИТЬ →
-			</button>
+                        <button class="nav-btn next" onclick="VNEngine.submitAnswer()">
+                            ОТВЕТИТЬ →
+                        </button>
                     </div>
                 </div>
             `;
         }
     }
- 
-static returnToMenu() {   
-	console.log('🏠 Возврат в меню из VN Engine');
-	if (typeof Menu !== 'undefined' && typeof Menu.show === 'function') {
-		Menu.show();
-	 } else {
-		console.error('❌ Menu не доступен');
-		// Fallback
-		const container = document.getElementById('app-container');
-		if (container) {
-			container.innerHTML = '<div class="loading">Возврат в меню...</div>';	
-		}
-		setTimeout(() => {
-			 if (typeof Menu !== 'undefined') {
-				Menu.show();
-			 } else {
-				location.reload();
-			}
-		 }, 500);
-	}
+    
+    static submitAnswer() {
+        // TODO: Реализовать проверку ответа
+        console.log('📝 Проверка ответа');
+        // Временная заглушка - считаем ответ верным
+        this.handleCorrectAnswer();
+    }
+    
+    static submitFinalAnswer() {
+        // TODO: Реализовать проверку финального ответа
+        console.log('📝 Проверка финального ответа');
+        // Временная заглушка - считаем ответ верным
+        this.handleCorrectAnswer();
+    }
+    
+    static handleCorrectAnswer() {
+        const fullEpisodeId = `${this.currentEpisode.chapter}_${this.currentEpisode.id}`;
+        
+        if (window.appState && window.appState.userData) {
+            window.appState.userData.score += 10;
+            window.appState.userData.currentEpisode = parseInt(this.currentEpisode.id) + 1;
+            
+            if (!window.appState.userData.completedEpisodes) {
+                window.appState.userData.completedEpisodes = [];
+            }
+            
+            if (!window.appState.userData.completedEpisodes.includes(fullEpisodeId)) {
+                window.appState.userData.completedEpisodes.push(fullEpisodeId);
+            }
+            
+            // Сохраняем данные
+            if (window.app && typeof window.app.saveUserData === 'function') {
+                window.app.saveUserData();
+            }
+            
+            this.showAnswerInput();
+        }
+    }
+    
+    static nextEpisode() {
+        console.log('🔜 Переход к следующему эпизоду');
+        const nextEpisodeId = `${this.currentEpisode.chapter}_${parseInt(this.currentEpisode.id) + 1}`;
+        
+        if (window.episodes[nextEpisodeId]) {
+            EpisodeView.show(nextEpisodeId);
+        } else {
+            console.log('🎉 Глава завершена!');
+            this.returnToMenu();
+        }
+    }
+    
+    static returnToMenu() {
+        console.log('🏠 Возврат в меню из VN Engine');
+        if (typeof Menu !== 'undefined' && typeof Menu.show === 'function') {
+            Menu.show();
+        } else {
+            console.error('❌ Menu не доступен');
+            location.reload();
+        }
+    }
 }
 
 // Автоматическая инициализация
