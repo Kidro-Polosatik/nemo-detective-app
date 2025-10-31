@@ -263,8 +263,26 @@ static showAnswerInput() {
             `;
         }
     }
-    
-    // ... остальные методы без изменений
+ 
+static returnToMenu() {   
+	console.log('🏠 Возврат в меню из VN Engine');
+	if (typeof Menu !== 'undefined' && typeof Menu.show === 'function') {
+		Menu.show();
+	 } else {
+		console.error('❌ Menu не доступен');
+		// Fallback
+		const container = document.getElementById('app-container');
+		if (container) {
+			container.innerHTML = '<div class="loading">Возврат в меню...</div>';	
+		}
+		setTimeout(() => {
+			 if (typeof Menu !== 'undefined') {
+				Menu.show();
+			 } else {
+				location.reload();
+			}
+		 }, 500);
+	}
 }
 
 // Автоматическая инициализация
