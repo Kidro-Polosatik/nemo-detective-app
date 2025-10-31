@@ -96,27 +96,13 @@
 
     <!-- 5. Новые ВН-эпизоды -->
     <script src="js/episodes/new/chapter1/episode1-vn.js" onerror="handleScriptError('Не удалось загрузить episode1-vn.js')"></script>
+    <script src="js/episodes/new/chapter1/episode2-vn.js" onerror="handleScriptError('Не удалось загрузить episode2-vn.js')"></script>
 
     <!-- 6. Секретное сообщение -->
     <script src="js/episodes/secret-message.js" onerror="handleScriptError('Не удалось загрузить secret-message.js')"></script>
 
     <!-- 7. Главное приложение (после всего!) -->
     <script src="js/app.js" onerror="handleScriptError('Не удалось загрузить app.js')"></script>
-
-    <!-- Резервная инициализация -->
-    <script>
-        // Резервный запуск если DOMContentLoaded не сработал
-        setTimeout(() => {
-            if (!window.app && document.readyState === 'complete') {
-                console.log('⚡ Резервная инициализация приложения');
-                if (typeof NemoDetectiveApp !== 'undefined') {
-                    window.app = new NemoDetectiveApp();
-                } else {
-                    console.error('❌ NemoDetectiveApp не загружен');
-                    handleScriptError('Основное приложение не загрузилось');
-                }
-            }
-        }, 3000);
 
         // Проверка готовности всех компонентов
         window.addEventListener('load', function() {
