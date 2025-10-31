@@ -255,15 +255,9 @@ class VNEngine {
                         </button>
                     </div>
                     
-                    <div class="navigation-buttons">
-                        <button class="nav-btn back" onclick="VNEngine.returnToMenu()">
-                            ← МЕНЮ
-                        </button>
-                        <button class="nav-btn menu" onclick="VNEngine.nextEpisode()">
-                            ПРОПУСТИТЬ
-                        </button>
-                        <button class="nav-btn next" onclick="VNEngine.submitAnswer()">
-                            ОТВЕТИТЬ →
+                   <div style="text-align: center; margin-top: 30px;">
+                        <button class="submit-btn" onclick="VNEngine.returnToMenu()" style="max-width: 250px;">
+                            ← ВЕРНУТЬСЯ В МЕНЮ
                         </button>
                     </div>
                 </div>
