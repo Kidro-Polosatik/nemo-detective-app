@@ -76,16 +76,16 @@
 /* Диалоговое окно - УВЕЛИЧИВАЕМ ВЫСОТУ */
 .dialog-box {
     position: absolute;
-    bottom: 0;
+    bottom: 80px; /* Оставляем место для кнопок */
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.9); /* Более темный фон */
+    background: rgba(0, 0, 0, 0.9);
     border-top: 3px solid #ffd700;
     padding: 25px;
     color: white;
     font-family: 'Georgia', serif;
-    z-index: 5; /* Понижаем z-index чтобы персонажи были поверх */
-    min-height: 180px; /* Увеличиваем минимальную высоту */
+    z-index: 5;
+    min-height: 120px; /* Уменьшаем высоту чтобы поместились кнопки */
 }
 
 .speaker-name {
@@ -98,23 +98,31 @@
 .dialog-text {
     font-size: 17px;
     line-height: 1.6;
-    min-height: 80px;
+    min-height: 60px;
 }
 
-/* НОВЫЕ КНОПКИ НАВИГАЦИИ */
+/* ТРИ КНОПКИ НАВИГАЦИИ */
 .navigation-buttons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
-    gap: 15px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    border-top: 2px solid #ffd700;
+    z-index: 10;
+    gap: 10px;
 }
 
 .nav-btn {
+    flex: 1;
     background: rgba(255, 215, 0, 0.2);
     color: #ffd700;
     border: 2px solid #ffd700;
-    padding: 12px 20px;
+    padding: 12px 5px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: bold;
@@ -123,8 +131,8 @@
     font-family: 'Georgia', serif;
     text-transform: uppercase;
     letter-spacing: 1px;
-    min-width: 120px;
     text-align: center;
+    min-height: 44px;
 }
 
 .nav-btn:hover {
@@ -156,30 +164,17 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
+.nav-btn.menu {
+    background: rgba(139, 69, 19, 0.3);
+    border-color: #8b4513;
+}
+
+.nav-btn.menu:hover {
+    background: rgba(139, 69, 19, 0.4);
+}
+
 .nav-btn.next {
     background: rgba(255, 215, 0, 0.3);
-}
-
-/* Кнопка назад в меню */
-.back-btn-vn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 100;
-    background: rgba(0, 0, 0, 0.7);
-    color: #ffd700;
-    border: 1px solid #ffd700;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Georgia', serif;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-.back-btn-vn:hover {
-    background: rgba(255, 215, 0, 0.2);
-    transform: translateY(-2px);
 }
 
 /* МОБИЛЬНЫЕ СТИЛИ */
@@ -245,7 +240,8 @@
     
     .dialog-box {
         padding: 20px;
-        min-height: 160px;
+        min-height: 100px;
+        bottom: 70px;
     }
     
     .speaker-name {
@@ -254,20 +250,17 @@
     
     .dialog-text {
         font-size: 16px;
-        min-height: 70px;
+        min-height: 50px;
     }
     
     .nav-btn {
-        padding: 10px 15px;
+        padding: 10px 5px;
         font-size: 12px;
-        min-width: 100px;
+        min-height: 40px;
     }
     
-    .back-btn-vn {
-        top: 10px;
-        left: 10px;
-        padding: 8px 12px;
-        font-size: 12px;
+    .navigation-buttons {
+        padding: 10px;
     }
 }
 
@@ -286,12 +279,12 @@
 
 /* СТИЛИ ДЛЯ СЦЕНЫ С БЛОКНОТОМ */
 .notebook-scene {
-    background: #f5f5dc !important; /* Цвет старой бумаги */
+    background: #f5f5dc !important;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 40px 20px;
+    padding: 40px 20px 80px 20px; /* Добавляем отступ снизу для кнопок */
 }
 
 .notebook-content {
@@ -310,7 +303,7 @@
     color: #333;
     white-space: pre-line;
     overflow-y: auto;
-    max-height: 60vh;
+    max-height: 50vh; /* Уменьшаем высоту чтобы поместились кнопки */
 }
 
 .answer-section-final {
@@ -320,6 +313,7 @@
     padding: 20px;
     border-radius: 8px;
     border-top: 3px solid #ffd700;
+    margin-bottom: 20px;
 }
 
 .answer-input-final {
