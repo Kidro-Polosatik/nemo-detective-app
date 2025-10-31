@@ -208,32 +208,25 @@ class VNEngine {
         }
     }
     
-    // ... остальные методы остаются без изменений
-    static showAnswerInput() {
-        const container = document.getElementById('app-container');
-        if (!container) return;
+static showAnswerInput() {
+         const container = document.getElementById('app-container');
+       if (!container) return;
         
         const fullEpisodeId = `${this.currentEpisode.chapter}_${this.currentEpisode.id}`;
         const isCompleted = window.appState?.userData?.completedEpisodes?.includes(fullEpisodeId);
         
-        if (isCompleted) {
+         if (isCompleted) {
             container.innerHTML = `
                 <div class="episode-container">
                     <div class="episode-title">
-                        Глава ${this.currentEpisode.chapter}, Эпизод ${this.currentEpisode.id}: ${this.currentEpisode.title} ✅
+                      Глава ${this.currentEpisode.chapter}, Эпизод ${this.currentEpisode.id}: ${this.currentEpisode.title} ✅
                     </div>
                     <div class="episode-text">
                         Эпизод уже завершён! Ваш ответ был верным.
                     </div>
-                    <div class="navigation-buttons">
-                        <button class="nav-btn back" onclick="VNEngine.returnToMenu()">
-                            ← МЕНЮ
-                        </button>
-                        <button class="nav-btn menu" onclick="Menu.showArchive()">
-                            АРХИВ
-                        </button>
-                        <button class="nav-btn next" onclick="VNEngine.nextEpisode()">
-                            СЛЕДУЮЩИЙ →
+                  <div style="text-align: center; margin-top: 30px;">
+                       <button class="submit-btn" onclick="VNEngine.returnToMenu()" style="max-width: 250px;">
+                             ← ВЕРНУТЬСЯ В МЕНЮ
                         </button>
                     </div>
                 </div>
@@ -255,10 +248,16 @@ class VNEngine {
                         </button>
                     </div>
                     
-                   <div style="text-align: center; margin-top: 30px;">
-                        <button class="submit-btn" onclick="VNEngine.returnToMenu()" style="max-width: 250px;">
-                            ← ВЕРНУТЬСЯ В МЕНЮ
+                   <div class="navigation-buttons">
+                        <button class="nav-btn back" onclick="VNEngine.returnToMenu()">
+                           ← МЕНЮ
                         </button>
+			 <button class="nav-btn menu" onclick="VNEngine.nextEpisode()">
+			    ПРОПУСТИТЬ
+                        </button>
+			 <button class="nav-btn next" onclick="VNEngine.submitAnswer()">
+			     ОТВЕТИТЬ →
+			</button>
                     </div>
                 </div>
             `;
